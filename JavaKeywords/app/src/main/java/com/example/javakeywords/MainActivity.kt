@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val timer = object : CountDownTimer(180000,
+    private val timer = object :CountDownTimer(180000,
         1000) {
 
         override fun onTick(millisUntilFinished: Long) {
