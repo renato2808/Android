@@ -69,8 +69,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val timer = object :CountDownTimer(180000,
+    private val timer = object : CountDownTimer(180000,
         1000) {
+
         override fun onTick(millisUntilFinished: Long) {
             val date = Date(millisUntilFinished)
             val format = SimpleDateFormat("mm:ss")
@@ -101,7 +102,10 @@ class MainActivity : AppCompatActivity() {
             0.toString())
         binding.timer.text = getString(R.string.time_left,
             "3:00")
-        binding.guessWord.setOnKeyListener { view, keyCode, _ -> handleKeyEvent(view, keyCode) }
+        binding.guessWord.setOnKeyListener { view, keyCode, _ ->
+            handleKeyEvent(view,
+                keyCode)
+        }
         binding.guessWord.isEnabled = false
 
         binding.buttonStart.setOnClickListener {
@@ -109,7 +113,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun startGame(){
+    private fun startGame() {
         remainingWords = wordsList.toMutableList()
         binding.guessWord.isEnabled = true
         binding.buttonStart.text = "RESTART"
@@ -123,7 +127,8 @@ class MainActivity : AppCompatActivity() {
         timer.start()
     }
 
-    private fun handleKeyEvent(view: View, keyCode: Int): Boolean {
+    private fun handleKeyEvent(view: View,
+                               keyCode: Int): Boolean {
         if (keyCode == KeyEvent.KEYCODE_ENTER) {
             val guessWord: String = binding.guessWord.text.toString()
                     .toLowerCase()
@@ -134,9 +139,9 @@ class MainActivity : AppCompatActivity() {
                 binding.score.text = getString(R.string.score,
                     score.toString())
                 remainingWords.remove(guessWord)
-                val inputMethodManager =
-                        getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+                val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(view.windowToken,
+                    0)
                 return true
             }
             binding.guessWord.text.clear()
