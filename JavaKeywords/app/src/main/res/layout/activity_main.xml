@@ -37,14 +37,15 @@
         android:id="@+id/words_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="WORDS GUESSED SO FAR:"
+        android:fontFamily="@font/custom_font"
+        android:textStyle="italic"
+        android:text="Words Guessed so far:"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintVertical_bias="0.1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timer"
-        />
+        app:layout_constraintVertical_bias="0.1" />
 
     <TextView
         android:id="@+id/remaining_words"
