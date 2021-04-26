@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -74,7 +75,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private val timer = object : CountDownTimer(
-        180000,
+        181000,
         1000
     ) {
 
@@ -96,15 +97,6 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("score", score)
             intent.putStringArrayListExtra("remainingWords", ArrayList(remainingWords))
             context.startActivity(intent)
-            /*
-            binding.remainingWords.append("\n")
-            binding.remainingWords.append("WORDS NOT GUESSED:")
-
-            remainingWords.sorted()
-                    .forEach {
-                        binding.remainingWords.append("\n")
-                        binding.remainingWords.append(it)
-                    }*/
         }
     }
 
@@ -133,6 +125,21 @@ class MainActivity : AppCompatActivity() {
         binding.buttonStart.setOnClickListener {
             startGame()
         }
+
+        if (intent?.extras?.getBoolean("restart") == true) {
+            startGame()
+        }
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        timer.cancel()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        startGame()
     }
 
     private fun startGame() {
@@ -180,9 +187,5 @@ class MainActivity : AppCompatActivity() {
             binding.guessWord.text.clear()
         }
         return false
-    }
-
-    fun getListOfWords(): MutableList<String> {
-        return remainingWords
     }
 }
