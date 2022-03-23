@@ -1,7 +1,7 @@
 package fundamentos
 
 fun main(args: Array<String>) {
-    val valor = "abc"
+    var valor: Any = 1
 
     if (valor is String) {
         println(valor)

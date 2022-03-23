@@ -1,6 +1,7 @@
 package com.example.javakeywords
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.javakeywords.databinding.ActivityResultBinding
@@ -16,10 +17,13 @@ class ResultActivity : AppCompatActivity() {
 
         binding = ActivityResultBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        savedInstanceState?.get("RESTART")
+
+        val score = intent?.extras?.getInt("score")
 
         binding.score.text = getString(
             R.string.score,
-            intent?.extras?.getInt("score").toString()
+            score.toString()
         )
 
         val remainingWords = intent?.extras?.getStringArrayList("remainingWords")
@@ -38,17 +42,18 @@ class ResultActivity : AppCompatActivity() {
             context.startActivity(intent)
         }
 
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(
-                view,
-                "Replace with your own action",
-                Snackbar.LENGTH_LONG
-            )
-                .setAction(
-                    "Action",
-                    null
-                )
-                .show()
+        binding.fab.setOnClickListener {
+            val intent = Intent(Intent.ACTION_SENDTO).apply {
+                data = Uri.parse("mailto:") // only email apps should handle this
+                putExtra(Intent.EXTRA_EMAIL, "fulano@gmail.com")
+                putExtra(Intent.EXTRA_CC, "fulano@gmail.com")
+                putExtra(Intent.EXTRA_SUBJECT, "JavaKeywords Score")
+                putExtra(Intent.EXTRA_TEXT, "Hi, my Java KeyWords score was $score out of 50")
+            }
+
+            //intent.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail")
+            if (intent.resolveActivity(packageManager) != null)
+                startActivity(intent)
         }
     }
 }

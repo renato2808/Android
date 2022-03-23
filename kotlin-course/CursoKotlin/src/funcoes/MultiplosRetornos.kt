@@ -5,6 +5,7 @@ import java.util.*
 data class Horario(val hora: Int, val minuto: Int, val segundo: Int)
 
 fun agora(): Horario {
+    Calendar.getInstance().calendarType
     val agora = Calendar.getInstance()
 
     with(agora) {

@@ -12,8 +12,8 @@ fun imprimirConceito(nota: Any) {
 }
 
 fun main(args: Array<String>) {
-    val notas = arrayOf(9.6, 3.8, 7.2, 5.5, 4.1)
+    val notas = arrayOf(9, 3.8, 7.2, 5, 4.1)
     for(nota in notas) {
-        imprimirConceito(nota.toInt())
+        imprimirConceito(nota)
     }
 }

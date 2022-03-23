@@ -10,7 +10,7 @@ val materialEscolar = listOf(
 )
 
 fun main(args: Array<String>) {
-    val totalizar = { total: Double, atual: Double -> total + atual }
+    val totalizar = { total: Double, atual: Double -> total * atual }
     val precoTotal = materialEscolar.map { it.preco }.reduce(totalizar)
 
     println("O preço médio é R$ ${precoTotal / materialEscolar.size}.")

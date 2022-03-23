@@ -1,18 +1,16 @@
 package classes
 
-class Filme {
-    val nome: String
-    val anoLancamento: Int
-    val genero: String
-
-    constructor(nome: String, anoLancamento: Int, genero: String) {
-        this.nome = nome
-        this.anoLancamento = anoLancamento
-        this.genero = genero
-    }
-}
+data class Movie (val name: String, val year :Int, val genre: String = "Drama")
 
 fun main(args: Array<String>) {
-    val filme = Filme("O Poderoso Chefão", 1972, "Drama")
-    println("O ${filme.genero} ${filme.nome} foi lançado em ${filme.anoLancamento}.")
+    val movie = Movie("The Godfather", 1972)
+    println("The ${movie.genre} ${movie.name} was released in ${movie.year}.")
+
+    val res = when (movie.genre){
+        "Comedy" -> 1
+        "Drama" -> 2
+        "Terror" -> 3
+        else -> 0
+    }
+    println(res)
 }

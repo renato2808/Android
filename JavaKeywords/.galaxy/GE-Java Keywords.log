@@ -1,14 +1,14 @@
-[2021-03-01 08:48:25] [L] galaxy property is null or empty 
-[2021-03-01 08:48:25] [L] Non-GB Project : Java Keywords 
-[2021-03-01 08:48:25] [L] allprojects : project : app 
-[2021-03-01 08:48:25] [L] Non-GB Project : app 
-[2021-03-01 08:48:25] [D] gradle projects loaded 
-[2021-03-01 08:48:25] [I] set common default repository : samsung maven 
-[2021-03-01 08:48:25] [I]     Default Repo : buildscript repository : http://10.252.250.53:8081/lm/content/groups/public/ 
-[2021-03-01 08:48:25] [I]     Default Repo : repository : http://10.252.250.53:8081/lm/content/groups/public/ 
-[2021-03-01 08:48:25] [I] set common default strategy 
-[2021-03-01 08:48:25] [I] set common default repository : samsung maven 
-[2021-03-01 08:48:25] [I]     Default Repo : buildscript repository : http://10.252.250.53:8081/lm/content/groups/public/ 
-[2021-03-01 08:48:25] [I]     Default Repo : repository : http://10.252.250.53:8081/lm/content/groups/public/ 
-[2021-03-01 08:48:25] [I] set common default strategy 
-[2021-03-01 08:48:25] [D] gradle projects evaluated 
+[2021-08-16 15:37:09] [L] galaxy property is null or empty 
+[2021-08-16 15:37:09] [L] Non-GB Project : Java Keywords 
+[2021-08-16 15:37:09] [L] allprojects : project : app 
+[2021-08-16 15:37:09] [L] Non-GB Project : app 
+[2021-08-16 15:37:09] [D] gradle projects loaded 
+[2021-08-16 15:37:09] [I] set common default repository : samsung maven 
+[2021-08-16 15:37:09] [I]     Default Repo : buildscript repository : http://10.252.250.53:8081/lm/content/groups/public/ 
+[2021-08-16 15:37:09] [I]     Default Repo : repository : http://10.252.250.53:8081/lm/content/groups/public/ 
+[2021-08-16 15:37:09] [I] set common default strategy 
+[2021-08-16 15:37:09] [I] set common default repository : samsung maven 
+[2021-08-16 15:37:09] [I]     Default Repo : buildscript repository : http://10.252.250.53:8081/lm/content/groups/public/ 
+[2021-08-16 15:37:09] [I]     Default Repo : repository : http://10.252.250.53:8081/lm/content/groups/public/ 
+[2021-08-16 15:37:09] [I] set common default strategy 
+[2021-08-16 15:38:59] [D] gradle projects evaluated 

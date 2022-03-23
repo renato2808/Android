@@ -18,6 +18,9 @@ fun main(args: Array<String>) {
     println(tv1.copy())
     println(tv1.copy(polegadas = 42))
 
+    val tv3 = tv1.copy(polegadas = 20)
+    println(tv3)
+
     // Destructuring em data class
     val (marca, pol) = tv1
     println("$marca $pol'")

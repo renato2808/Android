@@ -10,6 +10,8 @@ fun main(args: Array<String>) {
     }
 
     println(frutas.contains(Fruta("Banana", 1.50)))
+    frutas.add(Fruta("Banana", 1.0))
+    println(frutas)
     println(frutas.distinctBy { it.preco })
-    frutas.add(Fruta("", 1.0))
+    println(frutas.distinctBy { it.nome })
 }

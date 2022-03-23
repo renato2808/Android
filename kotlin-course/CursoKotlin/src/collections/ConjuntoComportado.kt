@@ -24,5 +24,8 @@ fun main(args: Array<String>) {
     }
 
     // Ordem maluca...
-    aprovados.sortedBy { it.substring(1) }.print()
+    println("\nSorted by second letter...")
+    for (aprovado in aprovados.sortedBy { it.substring(1) }) {
+        aprovado.print()
+    }
 }

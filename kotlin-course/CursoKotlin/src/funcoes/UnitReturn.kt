@@ -24,9 +24,9 @@ fun imprimeMaior5(a: Int, b: Int) {
 }
 
 fun main(args: Array<String>) {
-    imprimeMaior1(2, 1)
+    imprimeMaior1(2, 1).run { 2 > 4 }.run { println("Resultado = $this") }
     imprimeMaior2(2, 1)
     imprimeMaior3(2, 1)
-    imprimeMaior4(2, 1)
-    imprimeMaior5(2, 1).run { 2 > 4 }.run { print("Resultado = $this") }
+    imprimeMaior4(2, 1).run { 2 > 4 }.run { println("Resultado = $this") }
+    imprimeMaior5(2, 1).run { 2 > 4 }.run { println("Resultado = $this") }
 }

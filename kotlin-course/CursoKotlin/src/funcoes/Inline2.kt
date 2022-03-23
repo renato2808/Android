@@ -9,13 +9,9 @@ inline fun <T> executarComLog(nomeFuncao: String, funcao: () -> T): T {
     }
 }
 
-fun somar2(a: Int, b: Int): Int {
-    return a + b
-}
-
 fun main(args: Array<String>) {
     val resultado = executarComLog("somar") {
-        somar2(4, 5)
+        somar(4, 5)
     }
 
     println(resultado)

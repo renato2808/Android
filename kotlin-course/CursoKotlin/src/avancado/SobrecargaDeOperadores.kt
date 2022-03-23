@@ -11,4 +11,5 @@ fun main(args: Array<String>) {
 
     println(-ponto1)
     println(ponto1 + ponto2)
+    println(ponto1)
 }

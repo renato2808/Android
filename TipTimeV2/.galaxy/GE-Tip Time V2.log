@@ -1,0 +1,13 @@
+[2021-05-06 16:33:01] [L] galaxy property is null or empty 
+[2021-05-06 16:33:01] [L] Non-GB Project : Tip Time V2 
+[2021-05-06 16:33:01] [L] allprojects : project : app 
+[2021-05-06 16:33:01] [L] Non-GB Project : app 
+[2021-05-06 16:33:01] [D] gradle projects loaded 
+[2021-05-06 16:33:01] [I] set common default repository : samsung maven 
+[2021-05-06 16:33:01] [I]     Default Repo : buildscript repository : http://10.252.250.53:8081/lm/content/groups/public/ 
+[2021-05-06 16:33:01] [I]     Default Repo : repository : http://10.252.250.53:8081/lm/content/groups/public/ 
+[2021-05-06 16:33:01] [I] set common default strategy 
+[2021-05-06 16:33:01] [I] set common default repository : samsung maven 
+[2021-05-06 16:33:01] [I]     Default Repo : buildscript repository : http://10.252.250.53:8081/lm/content/groups/public/ 
+[2021-05-06 16:33:01] [I]     Default Repo : repository : http://10.252.250.53:8081/lm/content/groups/public/ 
+[2021-05-06 16:33:01] [I] set common default strategy 

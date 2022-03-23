@@ -7,7 +7,7 @@ fun main(args: Array<String>) {
         println(aluno)
     }
 
-    for((indice, aluno) in alunos.withIndex()) {
-        println("${indice + 1} - $aluno")
+    for((indice, _) in alunos.withIndex()) {
+        println("${indice + 1} - ${alunos[indice]}")
     }
 }

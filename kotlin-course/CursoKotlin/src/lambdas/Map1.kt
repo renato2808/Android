@@ -2,5 +2,6 @@ package lambdas
 
 fun main(args: Array<String>) {
     val alunos = arrayListOf("Pedro", "Tiago", "Jonas")
-    alunos.map { it.toUpperCase() }.apply { print(this) }
+    val alunos_upper = alunos.map { it.toUpperCase() }
+    println(alunos_upper)
 }

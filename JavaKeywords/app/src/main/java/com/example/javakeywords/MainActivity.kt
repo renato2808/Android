@@ -126,20 +126,19 @@ class MainActivity : AppCompatActivity() {
             startGame()
         }
 
-        if (intent?.extras?.getBoolean("restart") == true) {
-            startGame()
+        binding.buttonFinish.setOnClickListener {
+            timer.onFinish()
         }
+
+        //if (intent?.extras?.getBoolean("restart") == true) {
+        //    startGame()
+        //}
 
     }
 
     override fun onStop() {
         super.onStop()
         timer.cancel()
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        startGame()
     }
 
     private fun startGame() {

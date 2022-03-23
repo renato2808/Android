@@ -2,8 +2,8 @@ package fundamentos
 
 fun main(args: Array<String>) {
     val a: Int = 33.dec()
-    var b: String = a.toString()
+    var b: Char = a.toString().first()
 
     println("Int: $a")
-    println("Primeiro char da string b é: ${b.first()}")
+    println("Primeiro char da string a é: $b")
 }
