@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="30dp"
+    tools:context=".view.RatingDialogFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/closeDialogButton"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="21dp"
+            android:layout_marginEnd="21dp"
+            android:src="@drawable/ic_close" />
+
+        <LinearLayout
+            android:id="@+id/layoutRating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/dialogRatingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="44dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:gravity="center"
+                android:text="Avalie a cervejaria A"
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                tools:layout_editor_absoluteX="6dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="24dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/dialogScreenStar1"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_empty_star" />
+
+                <ImageView
+                    android:id="@+id/dialogScreenStar2"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="7dp"
+                    android:src="@drawable/ic_empty_star" />
+
+                <ImageView
+                    android:id="@+id/dialogScreenStar3"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="7dp"
+                    android:src="@drawable/ic_empty_star" />
+
+                <ImageView
+                    android:id="@+id/dialogScreenStar4"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="7dp"
+                    android:src="@drawable/ic_empty_star" />
+
+                <ImageView
+                    android:id="@+id/dialogScreenStar5"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="7dp"
+                    android:src="@drawable/ic_empty_star" />
+
+            </LinearLayout>
+
+            <EditText
+                android:layout_width="276dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="38dp"
+                android:hint="nome@email.com" />
+
+            <TextView
+                android:id="@+id/emailValid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="70dp"
+                android:text="Favor inserir um e-mail válido"
+                android:textColor="#FF4444"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="6dp" />
+
+
+            <Button
+                android:layout_width="326dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="34dp"
+                android:backgroundTint="#FFCC00"
+                android:text="SALVAR"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutSuccess"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="44dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:gravity="center"
+                android:text="Um brinde!"
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                tools:layout_editor_absoluteX="6dp" />
+
+            <ImageView
+                android:layout_width="57dp"
+                android:layout_height="54dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="42dp"
+                android:src="@drawable/ic_beer_toast" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center"
+                android:text="Sua avaliação foi \nadicionada com sucesso!"
+                android:textColor="#03AD00"
+                android:textSize="16sp"
+                tools:layout_editor_absoluteX="6dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutFail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="44dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:gravity="center"
+                android:text="Algo deu errado!"
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                tools:layout_editor_absoluteX="6dp" />
+
+            <ImageView
+                android:layout_width="57dp"
+                android:layout_height="54dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="42dp"
+                android:src="@drawable/ic_beer_spill" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center"
+                android:text="Não foi possível adicionar sua avaliação.\nTente novamente mais tarde."
+                android:textColor="#FF4444"
+                android:textSize="16sp"
+                tools:layout_editor_absoluteX="6dp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

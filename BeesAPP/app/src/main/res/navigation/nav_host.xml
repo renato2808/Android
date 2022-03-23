@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_host"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.beesapp.view.HomeFragment"
+        android:label="home_fragment"
+        tools:layout="@layout/home_fragment" />
+
+    <action
+        android:id="@+id/homeToDetails"
+        app:destination="@+id/detailsFragment" />
+
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.example.beesapp.view.DetailsFragment"
+        android:label="DetailsFragment">
+
+        <argument
+            android:name="breweryListName"
+            android:defaultValue="Inválido"
+            app:argType="string" />
+        <argument
+            android:name="breweryListType"
+            android:defaultValue="Inválido"
+            app:argType="string" />
+        <argument
+            android:name="breweryListRating"
+            android:defaultValue="0.0"
+            app:argType="float" />
+        <argument
+            android:name="breweryListSite"
+            android:defaultValue="Inválido"
+            app:argType="string" />
+        <argument
+            android:name="breweryListAdress"
+            android:defaultValue="Inválido"
+            app:argType="string" />
+    </fragment>
+
+    <action
+        android:id="@+id/detailsToRating"
+        app:destination="@+id/ratingFragment" />
+
+    <dialog
+        android:id="@+id/ratingFragment"
+        android:name="com.example.beesapp.view.RatingDialogFragment"
+        android:label="RatingDialogFragment">
+        <argument
+            android:name="breweryDialogName"
+            android:defaultValue="Inválido"
+            app:argType="string" />
+    </dialog>
+
+</navigation>
