@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "/home/renatoo/AndroidStudioProjects/BeesAPP/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/activity_splash_screen.xml",
+        "source": "/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/res/layout/activity_splash_screen.xml"
+    },
+    {
+        "merged": "/home/renatoo/AndroidStudioProjects/BeesAPP/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/list_item.xml",
+        "source": "/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/res/layout/list_item.xml"
+    },
+    {
+        "merged": "/home/renatoo/AndroidStudioProjects/BeesAPP/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/fragment_rating_dialog.xml",
+        "source": "/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/res/layout/fragment_rating_dialog.xml"
+    },
+    {
+        "merged": "/home/renatoo/AndroidStudioProjects/BeesAPP/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/fragment_details.xml",
+        "source": "/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/res/layout/fragment_details.xml"
+    },
+    {
+        "merged": "/home/renatoo/AndroidStudioProjects/BeesAPP/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/activity_main.xml",
+        "source": "/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/res/layout/activity_main.xml"
+    },
+    {
+        "merged": "/home/renatoo/AndroidStudioProjects/BeesAPP/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/home_fragment.xml",
+        "source": "/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/res/layout/home_fragment.xml"
+    }
+]
