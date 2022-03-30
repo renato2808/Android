@@ -91,7 +91,7 @@ class ItemAdapter(private var dataset: List<Brewery>, fragment: HomeFragment) : 
             }
         }
         dataset = filteredModelList
-        notifyDataSetChanged();
+        notifyDataSetChanged()
     }
 
     fun restoreData(data: List<Brewery>){

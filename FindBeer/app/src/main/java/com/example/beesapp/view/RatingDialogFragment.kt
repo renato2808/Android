@@ -1,6 +1,8 @@
 package com.example.beesapp.view
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +11,7 @@ import com.example.beesapp.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.fragment_rating_dialog.*
 
-class RatingDialogFragment : BottomSheetDialogFragment() {
+class RatingDialogFragment : BottomSheetDialogFragment(), TextWatcher {
 
     private val args: RatingDialogFragmentArgs by navArgs()
 
@@ -26,15 +28,16 @@ class RatingDialogFragment : BottomSheetDialogFragment() {
         setupRatingButtons()
         setupRatingStars()
         dialogRatingText.text = "Rate " + args.breweryDialogName
+        email.addTextChangedListener(this)
     }
 
-    private fun setupRatingButtons(){
+    private fun setupRatingButtons() {
         closeDialogButton.setOnClickListener {
             dismiss()
         }
     }
 
-    private fun setupRatingStars(){
+    private fun setupRatingStars() {
         dialogScreenStar1.setOnClickListener {
             dialogScreenStar1.setBackgroundResource(R.drawable.ic_complet_star)
             dialogScreenStar2.setBackgroundResource(R.drawable.ic_empty_star)
@@ -76,4 +79,23 @@ class RatingDialogFragment : BottomSheetDialogFragment() {
         }
     }
 
+    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+    }
+
+    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+    }
+
+    override fun afterTextChanged(p0: Editable?) {
+        val emailText: String = email.text.toString()
+
+        if (!emailText.contains("@", true) || (!emailText.contains(
+                ".com",
+                true
+            ) && !emailText.contains(".org", true))
+        ) {
+            emailValid.visibility = View.VISIBLE
+        } else {
+            emailValid.visibility = View.GONE
+        }
+    }
 }

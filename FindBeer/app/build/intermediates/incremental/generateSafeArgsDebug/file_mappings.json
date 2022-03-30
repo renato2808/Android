@@ -1,1 +1,0 @@
-[{"navFile":"src/main/res/navigation/nav_host.xml","javaFiles":["com.example.beesapp.NavHostDirections","com.example.beesapp.view.HomeFragmentDirections","com.example.beesapp.view.DetailsFragmentDirections","com.example.beesapp.view.DetailsFragmentArgs","com.example.beesapp.view.RatingDialogFragmentDirections","com.example.beesapp.view.RatingDialogFragmentArgs"]}]
