@@ -25,7 +25,7 @@ class RatingDialogFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRatingButtons()
         setupRatingStars()
-        dialogRatingText.text = "Avalie " + args.breweryDialogName
+        dialogRatingText.text = "Rate " + args.breweryDialogName
     }
 
     private fun setupRatingButtons(){

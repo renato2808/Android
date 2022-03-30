@@ -1,7 +1,6 @@
 package com.example.beesapp.view
 
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.view.View
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -73,10 +72,10 @@ class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener {
                     itemsAdapter.filter(newText)
                 }
                 else if (newText == ""){
-                    itemsAdapter.restoreAdapter(data)
+                    itemsAdapter.restoreData(data)
                 }
                 else {
-                    itemsAdapter.restoreAdapter(data)
+                    itemsAdapter.restoreData(data)
                 }
                 return true
             }

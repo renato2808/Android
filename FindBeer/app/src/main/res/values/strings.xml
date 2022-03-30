@@ -1,6 +1,25 @@
 <resources>
     <string name="app_name">BeesAPP</string>
-    <string name="welcome_app">Bem vindo, \nEncontre as melhores cervejarias</string>
+    <string name="welcome_app">Welcome, \nFind the best breweries.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="recycler_view_headline">According to users ratings:</string>
+    <string name="no_word_typed_message">No word was entered.</string>
+    <string name="breweries_not_found_message">List of breweries not found.</string>
+    <string name="try_again_message">Please try again for better results.</string>
+    <string name="search_breweries">Enter a location.</string>
+    <string name="type">Type</string>
+    <string name="address">Address</string>
+    <string name="website">Website</string>
+    <string name="find_address">See on map</string>
+    <string name="rate_brewery">RATE BREWERY</string>
+    <string name="brewery_details">Brewery Details</string>
+    <string name="save">SAVE</string>
+    <string name="invalid_email_message">Please insert a valid email.</string>
+    <string name="email_hint">name@email.com</string>
+    <string name="cheers">Cheers!</string>
+    <string name="error">Something went wrong.</string>
+    <string name="success_rating_message">Your rating was successfully \n recorded.</string>
+    <string name="error_rating_message">It was not possible to record your rating. \n Try again later.</string>
+    <string name="rate_brewery_a">Rate brewery A</string>
 </resources>

@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="56dp"
                 android:fontFamily="@font/quicksand_bold"
-                android:text="Detalhes da cervejaria"
+                android:text="@string/brewery_details"
                 android:textColor="#FFCC00"
                 android:textSize="18sp"
                 tools:layout_editor_absoluteX="16dp" />
@@ -127,7 +127,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/quicksand_bold"
                     android:gravity="center"
-                    android:text="Cervejaria C"
+                    android:text="Brewery C"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
@@ -224,7 +224,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Tipo"
+                        android:text="@string/type"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -253,7 +253,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Site"
+                        android:text="@string/website"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -275,15 +275,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="20dp">
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:paddingEnd="20dp"
-                        android:text="Endereço"
+                        android:text="@string/address"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -319,7 +319,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="26dp"
                         android:layout_marginTop="31dp"
-                        android:text="Ver no Mapa"
+                        android:text="@string/find_address"
                         android:textColor="@color/black"
                         android:textFontWeight="300"
                         android:textSize="16sp" />
@@ -334,7 +334,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="50dp"
                     android:backgroundTint="#FFCC00"
-                    android:text="AVALIAR CERVEJARIA"
+                    android:text="@string/rate_brewery"
                     android:textColor="@color/black" />
             </LinearLayout>
         </RelativeLayout>

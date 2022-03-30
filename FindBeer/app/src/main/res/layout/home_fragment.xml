@@ -83,11 +83,11 @@
                         android:layout_marginTop="26dp"
                         android:layout_marginBottom="60dp"
                         android:background="@color/white"
-                        android:textCursorDrawable="@null"
                         android:closeIcon="@null"
-                        android:queryHint="Buscar Local"
                         android:iconifiedByDefault="false"
-                        android:searchIcon="@drawable/ic_search" />
+                        android:queryHint="@string/search_breweries"
+                        android:searchIcon="@drawable/ic_search"
+                        android:textCursorDrawable="@null" />
 
                     <ImageView
                         android:layout_width="14dp"
@@ -117,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/quicksand_bold"
                 android:gravity="center"
-                android:text="Nenhum termo digitado"
+                android:text="@string/no_word_typed_message"
                 android:textColor="#333333"
                 android:textSize="22sp"
                 tools:layout_editor_absoluteX="16dp" />
@@ -128,7 +128,7 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="36dp"
                 android:gravity="center"
-                android:text="Por favor, verifique sua pesquisa e tente novamente para obter resultados."
+                android:text="@string/try_again_message"
                 android:textSize="16sp"
                 tools:layout_editor_absoluteX="16dp" />
 
@@ -148,7 +148,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/quicksand_bold"
                 android:gravity="center"
-                android:text="A lista de cervejaria não \nfoi encontrada"
+                android:text="@string/breweries_not_found_message"
                 android:textColor="#333333"
                 android:textSize="22sp"
                 tools:layout_editor_absoluteX="16dp" />
@@ -159,7 +159,7 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="36dp"
                 android:gravity="center"
-                android:text="Por favor, verifique sua pesquisa e tente novamente para obter resultados."
+                android:text="@string/try_again_message"
                 android:textSize="16sp"
                 tools:layout_editor_absoluteX="16dp" />
 
@@ -180,7 +180,7 @@
                 android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="26dp"
                 android:fontFamily="@font/quicksand_bold"
-                android:text="Segundo a opinião dos usuários:"
+                android:text="@string/recycler_view_headline"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 tools:layout_editor_absoluteX="6dp" />

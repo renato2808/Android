@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/home/renatoo/AndroidStudioProjects/BeesAPP/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-w320dp-land-v13/values-w320dp-land-v13.xml",
+            "outputFile": "/home/renatoo/AndroidStudioProjects/FindBeer/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-w320dp-land-v13/values-w320dp-land-v13.xml",
             "map": [
                 {
                     "source": "/home/renatoo/.gradle/caches/transforms-3/593e0b0f22ea37c7e668aaf321bfc91a/transformed/material-1.4.0/res/values-w320dp-land-v13/values-w320dp-land-v13.xml",

@@ -6,62 +6,62 @@
 6
 7    <uses-sdk
 8        android:minSdkVersion="21"
-8-->/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/AndroidManifest.xml
+8-->/home/renatoo/AndroidStudioProjects/FindBeer/app/src/main/AndroidManifest.xml
 9        android:targetSdkVersion="32" />
-9-->/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/AndroidManifest.xml
+9-->/home/renatoo/AndroidStudioProjects/FindBeer/app/src/main/AndroidManifest.xml
 10
 11    <application
-11-->/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/AndroidManifest.xml:5:5-31:19
+11-->/home/renatoo/AndroidStudioProjects/FindBeer/app/src/main/AndroidManifest.xml:5:5-31:19
 12        android:allowBackup="true"
-12-->/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/AndroidManifest.xml:6:9-35
+12-->/home/renatoo/AndroidStudioProjects/FindBeer/app/src/main/AndroidManifest.xml:6:9-35
 13        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 13-->[androidx.core:core:1.7.0] /home/renatoo/.gradle/caches/transforms-3/748fcf984ac82495fcf4154b9a506513/transformed/core-1.7.0/AndroidManifest.xml:24:18-86
 14        android:debuggable="true"
 15        android:icon="@mipmap/ic_launcher"
-15-->/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/AndroidManifest.xml:7:9-43
+15-->/home/renatoo/AndroidStudioProjects/FindBeer/app/src/main/AndroidManifest.xml:7:9-43
 16        android:label="@string/app_name"
-16-->/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/AndroidManifest.xml:8:9-41
+16-->/home/renatoo/AndroidStudioProjects/FindBeer/app/src/main/AndroidManifest.xml:8:9-41
 17        android:roundIcon="@mipmap/ic_launcher_round"
-17-->/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/AndroidManifest.xml:9:9-54
+17-->/home/renatoo/AndroidStudioProjects/FindBeer/app/src/main/AndroidManifest.xml:9:9-54
 18        android:supportsRtl="true"
-18-->/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/AndroidManifest.xml:10:9-35
+18-->/home/renatoo/AndroidStudioProjects/FindBeer/app/src/main/AndroidManifest.xml:10:9-35
 19        android:testOnly="true"
 20        android:theme="@style/Theme.BeesAPP" >
-20-->/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/AndroidManifest.xml:11:9-45
+20-->/home/renatoo/AndroidStudioProjects/FindBeer/app/src/main/AndroidManifest.xml:11:9-45
 21        <activity
-21-->/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/AndroidManifest.xml:12:9-21:20
+21-->/home/renatoo/AndroidStudioProjects/FindBeer/app/src/main/AndroidManifest.xml:12:9-21:20
 22            android:name="com.example.beesapp.SplashScreen"
-22-->/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/AndroidManifest.xml:13:13-41
+22-->/home/renatoo/AndroidStudioProjects/FindBeer/app/src/main/AndroidManifest.xml:13:13-41
 23            android:exported="true"
-23-->/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/AndroidManifest.xml:15:13-36
+23-->/home/renatoo/AndroidStudioProjects/FindBeer/app/src/main/AndroidManifest.xml:15:13-36
 24            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
-24-->/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/AndroidManifest.xml:14:13-69
+24-->/home/renatoo/AndroidStudioProjects/FindBeer/app/src/main/AndroidManifest.xml:14:13-69
 25            <intent-filter>
-25-->/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/AndroidManifest.xml:16:13-20:29
+25-->/home/renatoo/AndroidStudioProjects/FindBeer/app/src/main/AndroidManifest.xml:16:13-20:29
 26                <action android:name="android.intent.action.MAIN" />
-26-->/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/AndroidManifest.xml:17:17-69
-26-->/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/AndroidManifest.xml:17:25-66
+26-->/home/renatoo/AndroidStudioProjects/FindBeer/app/src/main/AndroidManifest.xml:17:17-69
+26-->/home/renatoo/AndroidStudioProjects/FindBeer/app/src/main/AndroidManifest.xml:17:25-66
 27
 28                <category android:name="android.intent.category.LAUNCHER" />
-28-->/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/AndroidManifest.xml:19:17-77
-28-->/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/AndroidManifest.xml:19:27-74
+28-->/home/renatoo/AndroidStudioProjects/FindBeer/app/src/main/AndroidManifest.xml:19:17-77
+28-->/home/renatoo/AndroidStudioProjects/FindBeer/app/src/main/AndroidManifest.xml:19:27-74
 29            </intent-filter>
 30        </activity>
 31        <activity
-31-->/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/AndroidManifest.xml:22:9-30:20
+31-->/home/renatoo/AndroidStudioProjects/FindBeer/app/src/main/AndroidManifest.xml:22:9-30:20
 32            android:name="com.example.beesapp.MainActivity"
-32-->/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/AndroidManifest.xml:23:13-41
+32-->/home/renatoo/AndroidStudioProjects/FindBeer/app/src/main/AndroidManifest.xml:23:13-41
 33            android:exported="true" >
-33-->/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/AndroidManifest.xml:24:13-36
+33-->/home/renatoo/AndroidStudioProjects/FindBeer/app/src/main/AndroidManifest.xml:24:13-36
 34            <intent-filter>
-34-->/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/AndroidManifest.xml:16:13-20:29
+34-->/home/renatoo/AndroidStudioProjects/FindBeer/app/src/main/AndroidManifest.xml:16:13-20:29
 35                <action android:name="android.intent.action.MAIN" />
-35-->/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/AndroidManifest.xml:17:17-69
-35-->/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/AndroidManifest.xml:17:25-66
+35-->/home/renatoo/AndroidStudioProjects/FindBeer/app/src/main/AndroidManifest.xml:17:17-69
+35-->/home/renatoo/AndroidStudioProjects/FindBeer/app/src/main/AndroidManifest.xml:17:25-66
 36
 37                <category android:name="android.intent.category.LAUNCHER" />
-37-->/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/AndroidManifest.xml:19:17-77
-37-->/home/renatoo/AndroidStudioProjects/BeesAPP/app/src/main/AndroidManifest.xml:19:27-74
+37-->/home/renatoo/AndroidStudioProjects/FindBeer/app/src/main/AndroidManifest.xml:19:17-77
+37-->/home/renatoo/AndroidStudioProjects/FindBeer/app/src/main/AndroidManifest.xml:19:27-74
 38            </intent-filter>
 39        </activity>
 40

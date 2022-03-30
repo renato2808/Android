@@ -94,7 +94,7 @@ class ItemAdapter(private var dataset: List<Brewery>, fragment: HomeFragment) : 
         notifyDataSetChanged();
     }
 
-    fun restoreAdapter(data: List<Brewery>){
+    fun restoreData(data: List<Brewery>){
         dataset = data
         notifyDataSetChanged()
     }

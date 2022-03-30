@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/home/renatoo/AndroidStudioProjects/BeesAPP/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-lt/values-lt.xml",
+            "outputFile": "/home/renatoo/AndroidStudioProjects/FindBeer/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-lt/values-lt.xml",
             "map": [
                 {
                     "source": "/home/renatoo/.gradle/caches/transforms-3/748fcf984ac82495fcf4154b9a506513/transformed/core-1.7.0/res/values-lt/values-lt.xml",
