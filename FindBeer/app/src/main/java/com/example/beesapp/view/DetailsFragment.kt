@@ -1,17 +1,17 @@
 package com.example.beesapp.view
 
-import androidx.lifecycle.ViewModelProvider
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.navigation.NavController
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.beesapp.R
 import com.example.beesapp.viewmodel.DetailsViewModel
 import kotlinx.android.synthetic.main.fragment_details.*
+
 
 class DetailsFragment : Fragment(R.layout.fragment_details) {
 
@@ -38,6 +38,14 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             val action = RatingDialogFragmentDirections.detailsToRating()
             action.breweryDialogName = args.breweryListName
             findNavController().navigate(action)
+        }
+        mapButton.setOnClickListener {
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("geo:0,0?q=" + breweryAddress.text)
+            )
+            intent.setPackage("com.google.android.apps.maps")
+            startActivity(intent)
         }
     }
 

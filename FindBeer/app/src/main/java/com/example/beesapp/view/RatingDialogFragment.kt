@@ -27,7 +27,7 @@ class RatingDialogFragment : BottomSheetDialogFragment(), TextWatcher {
         super.onViewCreated(view, savedInstanceState)
         setupRatingButtons()
         setupRatingStars()
-        dialogRatingText.text = "Rate " + args.breweryDialogName
+        dialogRatingText.text = String.format(resources.getString(R.string.rate_brewery_dialog_message),  args.breweryDialogName)
         email.addTextChangedListener(this)
     }
 
