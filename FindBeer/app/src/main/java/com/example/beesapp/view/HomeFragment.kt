@@ -1,8 +1,10 @@
 package com.example.beesapp.view
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.SearchView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -14,6 +16,7 @@ import com.example.beesapp.data.DataSource
 import com.example.beesapp.model.Brewery
 import com.example.beesapp.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.home_fragment.*
+
 
 class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener {
 
@@ -59,6 +62,8 @@ class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener {
     }
 
     private fun setupSearch() {
+        val id: Int = brewerySearch.context.resources.getIdentifier("android:id/search_src_text", null, null)
+        brewerySearch.findViewById<TextView>(id).setTextColor(Color.BLACK)
         brewerySearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
