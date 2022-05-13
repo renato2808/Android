@@ -12,38 +12,30 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.beesapp.R
 import com.example.beesapp.adapter.ItemAdapter
 import com.example.beesapp.adapter.OnBreweryClickListener
-import com.example.beesapp.data.DataSource
 import com.example.beesapp.model.Brewery
 import com.example.beesapp.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.home_fragment.*
 
-
 class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener {
 
     private lateinit var itemsAdapter: ItemAdapter
-    private val data = DataSource().loadBreweries()
+    private var data = emptyList<Brewery>().toMutableList()
+    private lateinit var viewModel: HomeViewModel
 
     companion object {
         fun newInstance() = HomeFragment()
     }
 
-    private lateinit var viewModel: HomeViewModel
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        addDataSource()
-        setupAdapter()
-        setupSearch()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
-
-    private fun addDataSource() {
-        itemsAdapter = ItemAdapter(data, this)
+        viewModel.breweryData.observe(viewLifecycleOwner) {
+            data.clear()
+            data.addAll(it)
+            itemsAdapter = ItemAdapter(data, this)
+            setupAdapter()
+        }
+        setupSearch()
     }
 
     private fun setupAdapter() {
@@ -75,11 +67,9 @@ class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener {
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText != null && newText != "") {
                     itemsAdapter.filter(newText)
-                }
-                else if (newText == ""){
+                } else if (newText == "") {
                     itemsAdapter.restoreData(data)
-                }
-                else {
+                } else {
                     itemsAdapter.restoreData(data)
                 }
                 return true

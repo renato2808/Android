@@ -203,8 +203,8 @@ fun concatEdgeLetters(a: MutableList<String>): MutableList<String> {
 }
 
 fun divisorSubstrings(n: Int, k: Int): Int {
-    var a = n.toString().toCharArray()
-    var substrings: MutableList<String> = mutableListOf()
+    val a = n.toString().toCharArray()
+    val substrings: MutableList<String> = mutableListOf()
     var result = 0
 
 
@@ -246,7 +246,7 @@ fun rectangleBoxes(operations: MutableList<MutableList<Int>>): MutableList<Boole
             for(rectangle in rectangles){
                 println(rectangle[0])
                 println(rectangle[1])
-                if (!((rectangle[0] <= operation[1] && rectangle[1] <= operation[2])  (rectangle[0] <= operation[2] && rectangle[1] <= operation[1]))) {
+                if (!((rectangle[0] <= operation[1] && rectangle[1] <= operation[2]) || (rectangle[0] <= operation[2] && rectangle[1] <= operation[1]))) {
                     result = false
                 }
             }
@@ -273,6 +273,6 @@ fun main(args: Array<String>) {
     println(canReorderDoubled(intArrayOf(0,0,0, 0)))
     println(convert("PAYPALISHIRING", 3 ))*/
     concatEdgeLetters(mutableListOf("I", "have", "a", "nice", "surprise"))
-    println(divisorSubstrings(508571724, 1))
+    println(divisorSubstrings(220903298, 2))
     println(rectangleBoxes(mutableListOf(mutableListOf(0, 1, 3), mutableListOf(0, 4, 2), mutableListOf(1, 3, 4), mutableListOf(1, 3, 2))))
 }

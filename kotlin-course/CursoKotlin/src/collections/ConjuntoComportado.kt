@@ -1,7 +1,7 @@
 package collections
 
 fun main(args: Array<String>) {
-    val aprovados = hashSetOf("João", "Maria", "Pedro", "Ana", "Joana")
+    val aprovados = hashSetOf("João", "Maria", "Pedro", "Ana", "Joana", "Maria")
     // aprovados.add(1)
 
     println("Sem ordem...")

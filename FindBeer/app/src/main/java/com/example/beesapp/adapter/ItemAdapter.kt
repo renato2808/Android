@@ -10,9 +10,8 @@ import com.example.beesapp.R
 import com.example.beesapp.model.Brewery
 import com.example.beesapp.view.HomeFragment
 import java.util.*
-import kotlin.collections.ArrayList
 
-class ItemAdapter(private var dataset: List<Brewery>, fragment: HomeFragment) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
+class ItemAdapter(private var dataset: MutableList<Brewery>, fragment: HomeFragment) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
     private val listener: OnBreweryClickListener = fragment
 
@@ -94,7 +93,7 @@ class ItemAdapter(private var dataset: List<Brewery>, fragment: HomeFragment) : 
         notifyDataSetChanged()
     }
 
-    fun restoreData(data: List<Brewery>){
+    fun restoreData(data: MutableList<Brewery>){
         dataset = data
         notifyDataSetChanged()
     }
