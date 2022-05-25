@@ -46,10 +46,10 @@ class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener {
     override fun onBreweryClick(data: Brewery) {
         val action = DetailsFragmentDirections.homeToDetails()
         action.breweryListName = data.name
-        action.breweryListType = data.type
+        action.breweryListType = data.brewery_type ?: ""
         action.breweryListRating = data.rating
-        action.breweryListSite = data.site
-        action.breweryListAdress = data.address
+        action.breweryListSite = data.website_url ?: ""
+        action.breweryListAdress = data.street ?: ""
         findNavController().navigate(action)
     }
 

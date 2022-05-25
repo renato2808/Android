@@ -40,9 +40,9 @@ class ItemAdapter(private var dataset: MutableList<Brewery>, fragment: HomeFragm
                                   position: Int) {
         val item = dataset[position]
 
-        holder.breweryViewInitial.text = item.name[0].toString()
-        holder.breweryViewName.text = item.name
-        holder.breweryViewType.text = item.type
+        holder.breweryViewInitial.text = item.name[0].toString() ?: ""
+        holder.breweryViewName.text = item.name ?: ""
+        holder.breweryViewType.text = item.brewery_type ?: ""
         holder.breweryViewRating.text = item.rating.toString()
 
         when (item.rating){
@@ -72,7 +72,7 @@ class ItemAdapter(private var dataset: MutableList<Brewery>, fragment: HomeFragm
         }
 
         holder.breweryButton.setOnClickListener {
-            listener.onBreweryClick(Brewery(item.name, item.type, item.rating, item.site, item.address))
+            listener.onBreweryClick(Brewery(item.name, item.brewery_type, item.rating, item.website_url, item.street))
         }
     }
 

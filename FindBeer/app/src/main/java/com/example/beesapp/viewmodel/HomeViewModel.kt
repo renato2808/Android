@@ -1,9 +1,10 @@
 package com.example.beesapp.viewmodel
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import com.example.beesapp.data.BreweryRepository
 
-class HomeViewModel : ViewModel() {
-    private val dataRepo = BreweryRepository()
+class HomeViewModel(app: Application) : AndroidViewModel(app)  {
+    private val dataRepo = BreweryRepository(app)
     val breweryData = dataRepo.breweryData
 }
