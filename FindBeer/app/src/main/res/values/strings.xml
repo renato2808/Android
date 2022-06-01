@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BeesAPP</string>
+    <string name="app_name">FindBeer</string>
     <string name="welcome_app">Welcome, \nFind the best breweries.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

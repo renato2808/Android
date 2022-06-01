@@ -13,6 +13,7 @@ import com.example.beesapp.R
 import com.example.beesapp.adapter.ItemAdapter
 import com.example.beesapp.adapter.OnBreweryClickListener
 import com.example.beesapp.model.Brewery
+import com.example.beesapp.util.StateMapping
 import com.example.beesapp.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.home_fragment.*
 
@@ -49,7 +50,10 @@ class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener {
         action.breweryListType = data.brewery_type ?: ""
         action.breweryListRating = data.rating
         action.breweryListSite = data.website_url ?: ""
-        action.breweryListAdress = data.street ?: ""
+        val street = data.street ?: ""
+        val city = data.city ?: ""
+        val state = data.state
+        action.breweryListAdress = "$street, $city, ${StateMapping.getStateAbbreviation(state)}"
         findNavController().navigate(action)
     }
 

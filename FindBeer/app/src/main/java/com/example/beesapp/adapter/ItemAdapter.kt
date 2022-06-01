@@ -39,13 +39,14 @@ class ItemAdapter(private var dataset: MutableList<Brewery>, fragment: HomeFragm
     override fun onBindViewHolder(holder: ItemViewHolder,
                                   position: Int) {
         val item = dataset[position]
+        val rating = item.rating
 
-        holder.breweryViewInitial.text = item.name[0].toString() ?: ""
-        holder.breweryViewName.text = item.name ?: ""
+        holder.breweryViewInitial.text = item.name[0].toString()
+        holder.breweryViewName.text = item.name
         holder.breweryViewType.text = item.brewery_type ?: ""
-        holder.breweryViewRating.text = item.rating.toString()
+        holder.breweryViewRating.text = rating.toString()
 
-        when (item.rating){
+        when (rating){
             in 1f..1.9f -> holder.star1.setBackgroundResource(R.drawable.ic_complet_star)
             in 2f..2.9f -> {
                 holder.star1.setBackgroundResource(R.drawable.ic_complet_star)
@@ -72,7 +73,7 @@ class ItemAdapter(private var dataset: MutableList<Brewery>, fragment: HomeFragm
         }
 
         holder.breweryButton.setOnClickListener {
-            listener.onBreweryClick(Brewery(item.name, item.brewery_type, item.rating, item.website_url, item.street))
+            listener.onBreweryClick(Brewery(item.name, item.brewery_type, item.rating, item.website_url, item.street, item.city, item.state))
         }
     }
 

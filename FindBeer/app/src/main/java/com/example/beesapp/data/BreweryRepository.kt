@@ -12,6 +12,9 @@ import com.example.beesapp.model.Brewery
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
@@ -20,7 +23,7 @@ class BreweryRepository(val app: Application) {
     val breweryData = MutableLiveData<MutableList<Brewery>>()
 
     init {
-        CoroutineScope(Dispatchers.IO).launch { callWebService() }
+        CoroutineScope(Dispatchers.IO).launch { getBreweriesByState("california") }
     }
 
     @WorkerThread
@@ -36,6 +39,32 @@ class BreweryRepository(val app: Application) {
                 Log.i(LOG_TAG, brewery.name)
             }
             breweryData.postValue(serviceData.toMutableList())
+        }
+    }
+
+    @WorkerThread
+    fun getBreweriesByState(state: String) {
+        if (networkAvailable()) {
+            val retrofit = Retrofit.Builder()
+                .baseUrl(WEB_SERVICE_URL)
+                .addConverterFactory(MoshiConverterFactory.create())
+                .build()
+            val service = retrofit.create(BreweryService::class.java)
+            val call: Call<List<Brewery>?> = service.getBreweryDataByState(state)
+            call.enqueue(object : Callback<List<Brewery>?> {
+                override fun onResponse(call: Call<List<Brewery>?>, response: Response<List<Brewery>?>) {
+                    val statusCode: Int = response.code()
+                    val breweries = response.body() ?: emptyList()
+                    for (brewery in breweries) {
+                        Log.i(LOG_TAG, brewery.name)
+                    }
+                    breweryData.postValue(breweries.toMutableList())
+                }
+
+                override fun onFailure(call: Call<List<Brewery>?>, t: Throwable) {
+                    t.message?.let { Log.i(LOG_TAG, it) }
+                }
+            })
         }
     }
 
