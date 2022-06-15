@@ -20,10 +20,10 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 class BreweryRepository(val app: Application) {
 
-    val breweryData = MutableLiveData<MutableList<Brewery>>()
+    val breweryData = MutableLiveData<List<Brewery>>()
 
     init {
-        CoroutineScope(Dispatchers.IO).launch { getBreweriesByState("california") }
+        CoroutineScope(Dispatchers.IO).launch { getBreweriesByState("Alabama") }
     }
 
     @WorkerThread
@@ -38,7 +38,7 @@ class BreweryRepository(val app: Application) {
             for (brewery in serviceData) {
                 Log.i(LOG_TAG, brewery.name)
             }
-            breweryData.postValue(serviceData.toMutableList())
+            breweryData.postValue(serviceData)
         }
     }
 
@@ -58,7 +58,7 @@ class BreweryRepository(val app: Application) {
                     for (brewery in breweries) {
                         Log.i(LOG_TAG, brewery.name)
                     }
-                    breweryData.postValue(breweries.toMutableList())
+                    breweryData.postValue(breweries)
                 }
 
                 override fun onFailure(call: Call<List<Brewery>?>, t: Throwable) {

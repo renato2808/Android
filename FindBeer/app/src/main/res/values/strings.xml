@@ -22,4 +22,5 @@
     <string name="success_rating_message">Your rating was successfully \n recorded.</string>
     <string name="error_rating_message">It was not possible to record your rating. \n Try again later.</string>
     <string name="rate_brewery_dialog_message">Rate %1$s</string>
+    <string name="select_state">Select a State:</string>
 </resources>

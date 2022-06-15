@@ -270,8 +270,7 @@
                         android:text="www.Bar.com"
                         android:textColor="@color/black"
                         android:textFontWeight="300"
-                        android:textSize="16sp"
-                        app:layout_constraintLeft_toLeftOf="@+id/website" />
+                        android:textSize="16sp" />
                 </RelativeLayout>
 
                 <View style="@style/Divider" />
