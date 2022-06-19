@@ -27,7 +27,7 @@ class BreweryRepository(val app: Application) {
     }
 
     @WorkerThread
-    suspend fun callWebService() {
+    suspend fun getBreweries() {
         if (networkAvailable()) {
             val retrofit = Retrofit.Builder()
                 .baseUrl(WEB_SERVICE_URL)

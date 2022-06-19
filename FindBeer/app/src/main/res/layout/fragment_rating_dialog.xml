@@ -94,7 +94,7 @@
                 android:hint="@string/email_hint" />
 
             <TextView
-                android:id="@+id/emailValid"
+                android:id="@+id/emailInvalid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="70dp"

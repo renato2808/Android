@@ -93,9 +93,9 @@ class RatingDialogFragment : BottomSheetDialogFragment(), TextWatcher {
                 true
             ) && !emailText.contains(".org", true))
         ) {
-            emailValid.visibility = View.VISIBLE
+            emailInvalid.visibility = View.VISIBLE
         } else {
-            emailValid.visibility = View.GONE
+            emailInvalid.visibility = View.GONE
         }
     }
 }

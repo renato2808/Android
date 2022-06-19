@@ -38,6 +38,7 @@ class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener, A
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        itemsAdapter = ItemAdapter(data, this)
         setupViewModel()
         setupSearch()
         setupStatesSpinner()
@@ -110,7 +111,6 @@ class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener, A
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         val state = StateMapping.states.keys.toList()[position]
-        Log.i(LOG_TAG, state)
         viewModel.changeState(state)
     }
 
