@@ -201,7 +201,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:gravity="center"
-                        android:text="+ de 500 avaliações"
                         android:textColor="#A5A5A5"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -240,8 +239,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
-                            android:text="Bar"
                             android:layout_marginEnd="22dp"
+                            android:text="Bar"
                             android:textColor="@color/black"
                             android:textFontWeight="300"
                             android:textSize="16sp" />

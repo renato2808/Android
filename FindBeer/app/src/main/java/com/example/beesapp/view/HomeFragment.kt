@@ -1,5 +1,6 @@
 package com.example.beesapp.view
 
+import android.app.Application
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Debug
@@ -10,16 +11,20 @@ import android.widget.ArrayAdapter
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.beesapp.FindBeerApplication
 import com.example.beesapp.LOG_TAG
 import com.example.beesapp.R
 import com.example.beesapp.adapter.ItemAdapter
 import com.example.beesapp.adapter.OnBreweryClickListener
 import com.example.beesapp.model.Brewery
+import com.example.beesapp.model.BreweryRating
 import com.example.beesapp.util.StateMapping
 import com.example.beesapp.viewmodel.HomeViewModel
+import com.example.beesapp.viewmodel.HomeViewModelFactory
 import kotlinx.android.synthetic.main.home_fragment.*
 
 
@@ -30,7 +35,12 @@ class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener, A
 
     private lateinit var itemsAdapter: ItemAdapter
     private var data = emptyList<Brewery>().toMutableList()
-    private lateinit var viewModel: HomeViewModel
+    private var ratingData = emptyList<BreweryRating>().toMutableList()
+    private val viewModel: HomeViewModel by viewModels {
+        HomeViewModelFactory((this.context?.applicationContext as FindBeerApplication).repository,
+            this.context?.applicationContext as FindBeerApplication
+        )
+    }
 
     companion object {
         fun newInstance() = HomeFragment()
@@ -38,18 +48,21 @@ class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener, A
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        itemsAdapter = ItemAdapter(data, this)
+        itemsAdapter = ItemAdapter(data, ratingData,this)
         setupViewModel()
         setupSearch()
         setupStatesSpinner()
     }
 
     private fun setupViewModel() {
-        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         viewModel.breweryData.observe(viewLifecycleOwner) {
             data.clear()
             data.addAll(it)
-            itemsAdapter = ItemAdapter(data, this)
+            ratingData.clear()
+            viewModel.breweryRatingData.value?.forEach { rating->
+                ratingData.add(rating)
+            }
+            itemsAdapter = ItemAdapter(data, ratingData, this)
             setupAdapter()
         }
     }
@@ -59,17 +72,18 @@ class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener, A
         recyclerView.adapter = itemsAdapter
     }
 
-    override fun onBreweryClick(data: Brewery) {
+    override fun onBreweryClick(brewery: Brewery, rating: Float, nRatings: Int) {
         val action = DetailsFragmentDirections.homeToDetails()
-        action.breweryListName = data.name
-        action.breweryListType = data.brewery_type ?: ""
-        action.breweryListRating = data.rating
-        action.breweryListSite = data.website_url?.removePrefix(HTTP_PREFIX) ?: ""
+        action.breweryListName = brewery.name
+        action.breweryListType = brewery.brewery_type ?: ""
+        action.breweryListRating = rating
+        action.breweryListNumberOfRatings = nRatings
+        action.breweryListSite = brewery.website_url?.removePrefix(HTTP_PREFIX) ?: ""
         action.breweryListSite.removePrefix(HTTPS_PREFIX)
-        val street = data.street ?: ""
-        val city = data.city ?: ""
-        val state = data.state
-        action.breweryListAdress = "$street, $city, ${StateMapping.getStateAbbreviation(state)}"
+        val street = brewery.street ?: ""
+        val city = brewery.city ?: ""
+        val state = brewery.state
+        action.breweryListAddress = "$street, $city, ${StateMapping.getStateAbbreviation(state)}"
         findNavController().navigate(action)
     }
 

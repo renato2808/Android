@@ -33,11 +33,15 @@
             android:defaultValue="0.0"
             app:argType="float" />
         <argument
+            android:name="breweryListNumberOfRatings"
+            android:defaultValue="0"
+            app:argType="integer" />
+        <argument
             android:name="breweryListSite"
             android:defaultValue="Inválido"
             app:argType="string" />
         <argument
-            android:name="breweryListAdress"
+            android:name="breweryListAddress"
             android:defaultValue="Inválido"
             app:argType="string" />
     </fragment>
@@ -54,6 +58,14 @@
             android:name="breweryDialogName"
             android:defaultValue="Inválido"
             app:argType="string" />
+        <argument
+            android:name="breweryDialogRating"
+            android:defaultValue="0.0"
+            app:argType="float" />
+        <argument
+            android:name="breweryDialogNumberOfRatings"
+            android:defaultValue="0"
+            app:argType="integer" />
     </dialog>
 
 </navigation>

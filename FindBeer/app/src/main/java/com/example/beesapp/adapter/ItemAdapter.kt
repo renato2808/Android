@@ -8,10 +8,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.beesapp.R
 import com.example.beesapp.model.Brewery
+import com.example.beesapp.model.BreweryRating
 import com.example.beesapp.view.HomeFragment
 import java.util.*
 
-class ItemAdapter(private var dataset: MutableList<Brewery>, fragment: HomeFragment) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
+class ItemAdapter(private var dataset: List<Brewery>, private var ratingData: List<BreweryRating>, fragment: HomeFragment) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
     private val listener: OnBreweryClickListener = fragment
 
@@ -39,7 +40,8 @@ class ItemAdapter(private var dataset: MutableList<Brewery>, fragment: HomeFragm
     override fun onBindViewHolder(holder: ItemViewHolder,
                                   position: Int) {
         val item = dataset[position]
-        val rating = item.rating
+        val rating = ratingData[position].rating
+        val nRatings = ratingData[position].nRatings
 
         holder.breweryViewInitial.text = item.name[0].toString()
         holder.breweryViewName.text = item.name
@@ -73,7 +75,7 @@ class ItemAdapter(private var dataset: MutableList<Brewery>, fragment: HomeFragm
         }
 
         holder.breweryButton.setOnClickListener {
-            listener.onBreweryClick(Brewery(item.name, item.brewery_type, item.rating, item.website_url, item.street, item.city, item.state))
+            listener.onBreweryClick(Brewery(item.name, item.brewery_type, item.website_url, item.street, item.city, item.state), rating, nRatings)
         }
     }
 

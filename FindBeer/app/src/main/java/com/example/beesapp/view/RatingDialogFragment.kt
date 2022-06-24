@@ -6,14 +6,27 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.beesapp.FindBeerApplication
 import com.example.beesapp.R
+import com.example.beesapp.viewmodel.DetailsViewModel
+import com.example.beesapp.viewmodel.DetailsViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.fragment_rating_dialog.*
 
 class RatingDialogFragment : BottomSheetDialogFragment(), TextWatcher {
 
     private val args: RatingDialogFragmentArgs by navArgs()
+    private var rating = 0f
+    private val viewModel: DetailsViewModel by viewModels {
+        DetailsViewModelFactory(
+            (this.context?.applicationContext as FindBeerApplication).repository,
+            this.context?.applicationContext as FindBeerApplication
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,13 +40,26 @@ class RatingDialogFragment : BottomSheetDialogFragment(), TextWatcher {
         super.onViewCreated(view, savedInstanceState)
         setupRatingButtons()
         setupRatingStars()
-        dialogRatingText.text = String.format(resources.getString(R.string.rate_brewery_dialog_message),  args.breweryDialogName)
+        dialogRatingText.text =
+            String.format(resources.getString(R.string.rate_brewery_dialog_message), args.breweryDialogName)
         email.addTextChangedListener(this)
+        setupSaveButton()
     }
 
     private fun setupRatingButtons() {
         closeDialogButton.setOnClickListener {
             dismiss()
+        }
+    }
+
+    private fun setupSaveButton() {
+        saveButton.setOnClickListener {
+            if (!emailInvalid.isVisible) {
+                val nRatings = args.breweryDialogNumberOfRatings + 1
+                val newRating = (rating + args.breweryDialogRating) / (nRatings)
+                viewModel.updateBreweryRating(newRating, nRatings, args.breweryDialogName)
+                dismiss()
+            }
         }
     }
 
@@ -44,6 +70,7 @@ class RatingDialogFragment : BottomSheetDialogFragment(), TextWatcher {
             dialogScreenStar3.setBackgroundResource(R.drawable.ic_empty_star)
             dialogScreenStar4.setBackgroundResource(R.drawable.ic_empty_star)
             dialogScreenStar5.setBackgroundResource(R.drawable.ic_empty_star)
+            rating = 1f
         }
 
         dialogScreenStar2.setOnClickListener {
@@ -52,6 +79,7 @@ class RatingDialogFragment : BottomSheetDialogFragment(), TextWatcher {
             dialogScreenStar3.setBackgroundResource(R.drawable.ic_empty_star)
             dialogScreenStar4.setBackgroundResource(R.drawable.ic_empty_star)
             dialogScreenStar5.setBackgroundResource(R.drawable.ic_empty_star)
+            rating = 2f
         }
 
         dialogScreenStar3.setOnClickListener {
@@ -60,6 +88,7 @@ class RatingDialogFragment : BottomSheetDialogFragment(), TextWatcher {
             dialogScreenStar3.setBackgroundResource(R.drawable.ic_complet_star)
             dialogScreenStar4.setBackgroundResource(R.drawable.ic_empty_star)
             dialogScreenStar5.setBackgroundResource(R.drawable.ic_empty_star)
+            rating = 3f
         }
 
         dialogScreenStar4.setOnClickListener {
@@ -68,6 +97,7 @@ class RatingDialogFragment : BottomSheetDialogFragment(), TextWatcher {
             dialogScreenStar3.setBackgroundResource(R.drawable.ic_complet_star)
             dialogScreenStar4.setBackgroundResource(R.drawable.ic_complet_star)
             dialogScreenStar5.setBackgroundResource(R.drawable.ic_empty_star)
+            rating = 4f
         }
 
         dialogScreenStar5.setOnClickListener {
@@ -76,6 +106,7 @@ class RatingDialogFragment : BottomSheetDialogFragment(), TextWatcher {
             dialogScreenStar3.setBackgroundResource(R.drawable.ic_complet_star)
             dialogScreenStar4.setBackgroundResource(R.drawable.ic_complet_star)
             dialogScreenStar5.setBackgroundResource(R.drawable.ic_complet_star)
+            rating = 5f
         }
     }
 
