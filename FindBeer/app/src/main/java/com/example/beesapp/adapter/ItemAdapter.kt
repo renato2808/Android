@@ -46,7 +46,7 @@ class ItemAdapter(private var dataset: List<Brewery>, private var ratingData: Li
         holder.breweryViewInitial.text = item.name[0].toString()
         holder.breweryViewName.text = item.name
         holder.breweryViewType.text = item.brewery_type ?: ""
-        holder.breweryViewRating.text = rating.toString()
+        holder.breweryViewRating.text = String.format("%.1f", rating)
 
         when (rating){
             in 1f..1.9f -> holder.star1.setBackgroundResource(R.drawable.ic_complet_star)

@@ -47,13 +47,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         arrowBack.setOnClickListener {
             findNavController().popBackStack()
         }
-        ratingButton.setOnClickListener {
-            val action = RatingDialogFragmentDirections.detailsToRating()
-            action.breweryDialogName = args.breweryListName
-            action.breweryDialogRating = args.breweryListRating
-            action.breweryDialogNumberOfRatings = args.breweryListNumberOfRatings
-            findNavController().navigate(action)
-        }
+        setUpRatingButtonListener(args.breweryListName, args.breweryListRating, args.breweryListNumberOfRatings)
         mapButton.setOnClickListener {
             val intent = Intent(
                 Intent.ACTION_VIEW,
@@ -69,8 +63,9 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             viewModel.breweryRatingData.value?.forEach {
                 if (it.name == breweryName.text.toString()) {
                     numberOfRatings.text = "${it.nRatings} ratings"
-                    breweryRating.text = it.rating.toString()
+                    breweryRating.text = String.format("%.1f", it.rating)
                     fillStars(it.rating)
+                    setUpRatingButtonListener(it.name, it.rating, it.nRatings)
                 }
             }
         }
@@ -80,29 +75,41 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         breweryInitial.text = args.breweryListName[0].toString()
         breweryName.text = args.breweryListName
         numberOfRatings.text = "${args.breweryListNumberOfRatings} ratings"
-        breweryRating.text = args.breweryListRating.toString()
+        breweryRating.text = String.format("%.1f", args.breweryListRating)
         breweryType.text = args.breweryListType
         brewerySite.text = args.breweryListSite
         breweryAddress.text = args.breweryListAddress
     }
 
-    fun fillStars(rating: Float) {
+    private fun fillStars(rating: Float) {
         when (rating) {
-            in 1f..1.9f -> detailScreenStar1.setBackgroundResource(R.drawable.ic_complet_star)
+            in 1f..1.9f ->{
+                detailScreenStar1.setBackgroundResource(R.drawable.ic_complet_star)
+                detailScreenStar2.setBackgroundResource(R.drawable.ic_empty_star)
+                detailScreenStar3.setBackgroundResource(R.drawable.ic_empty_star)
+                detailScreenStar4.setBackgroundResource(R.drawable.ic_empty_star)
+                detailScreenStar5.setBackgroundResource(R.drawable.ic_empty_star)
+            }
             in 2f..2.9f -> {
                 detailScreenStar1.setBackgroundResource(R.drawable.ic_complet_star)
                 detailScreenStar2.setBackgroundResource(R.drawable.ic_complet_star)
+                detailScreenStar3.setBackgroundResource(R.drawable.ic_empty_star)
+                detailScreenStar4.setBackgroundResource(R.drawable.ic_empty_star)
+                detailScreenStar5.setBackgroundResource(R.drawable.ic_empty_star)
             }
             in 3f..3.9f -> {
                 detailScreenStar1.setBackgroundResource(R.drawable.ic_complet_star)
                 detailScreenStar2.setBackgroundResource(R.drawable.ic_complet_star)
                 detailScreenStar3.setBackgroundResource(R.drawable.ic_complet_star)
+                detailScreenStar4.setBackgroundResource(R.drawable.ic_empty_star)
+                detailScreenStar5.setBackgroundResource(R.drawable.ic_empty_star)
             }
             in 4f..4.9f -> {
                 detailScreenStar1.setBackgroundResource(R.drawable.ic_complet_star)
                 detailScreenStar2.setBackgroundResource(R.drawable.ic_complet_star)
                 detailScreenStar3.setBackgroundResource(R.drawable.ic_complet_star)
                 detailScreenStar4.setBackgroundResource(R.drawable.ic_complet_star)
+                detailScreenStar5.setBackgroundResource(R.drawable.ic_empty_star)
             }
             5f -> {
                 detailScreenStar1.setBackgroundResource(R.drawable.ic_complet_star)
@@ -111,6 +118,16 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 detailScreenStar4.setBackgroundResource(R.drawable.ic_complet_star)
                 detailScreenStar5.setBackgroundResource(R.drawable.ic_complet_star)
             }
+        }
+    }
+
+    private fun setUpRatingButtonListener(breweryName: String, breweryRating: Float, nRatings: Int) {
+        ratingButton.setOnClickListener {
+            val action = RatingDialogFragmentDirections.detailsToRating()
+            action.breweryDialogName = breweryName
+            action.breweryDialogRating = breweryRating
+            action.breweryDialogNumberOfRatings = nRatings
+            findNavController().navigate(action)
         }
     }
 }

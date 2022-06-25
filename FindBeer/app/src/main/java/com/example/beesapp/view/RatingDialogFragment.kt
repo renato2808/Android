@@ -54,11 +54,13 @@ class RatingDialogFragment : BottomSheetDialogFragment(), TextWatcher {
 
     private fun setupSaveButton() {
         saveButton.setOnClickListener {
-            if (!emailInvalid.isVisible) {
+            if (email.text.isNotEmpty() && !emailInvalid.isVisible) {
                 val nRatings = args.breweryDialogNumberOfRatings + 1
-                val newRating = (rating + args.breweryDialogRating) / (nRatings)
+                val newRating = ((nRatings - 1) * args.breweryDialogRating + rating) / (nRatings)
                 viewModel.updateBreweryRating(newRating, nRatings, args.breweryDialogName)
                 dismiss()
+            } else {
+                emailInvalid.visibility = View.VISIBLE
             }
         }
     }
