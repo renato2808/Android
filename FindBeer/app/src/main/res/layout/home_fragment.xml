@@ -190,7 +190,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/headLayout">
 
                 <Spinner
-                    android:id="@+id/states_spinner"
+                    android:id="@+id/statesSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="40dp" />

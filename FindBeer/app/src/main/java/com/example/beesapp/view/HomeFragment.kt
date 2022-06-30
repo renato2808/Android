@@ -1,43 +1,45 @@
 package com.example.beesapp.view
 
-import android.app.Application
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Debug
-import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.beesapp.FindBeerApplication
-import com.example.beesapp.LOG_TAG
 import com.example.beesapp.R
 import com.example.beesapp.adapter.ItemAdapter
 import com.example.beesapp.adapter.OnBreweryClickListener
+import com.example.beesapp.databinding.HomeFragmentBinding
 import com.example.beesapp.model.Brewery
 import com.example.beesapp.model.BreweryRating
 import com.example.beesapp.util.StateMapping
 import com.example.beesapp.viewmodel.HomeViewModel
 import com.example.beesapp.viewmodel.HomeViewModelFactory
-import kotlinx.android.synthetic.main.home_fragment.*
-
 
 internal const val HTTP_PREFIX = "http://www."
 internal const val HTTPS_PREFIX = "httpS://www."
 
 class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener, AdapterView.OnItemSelectedListener {
 
+    private var _binding: HomeFragmentBinding? = null
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
     private lateinit var itemsAdapter: ItemAdapter
     private var data = emptyList<Brewery>().toMutableList()
     private var ratingData = emptyList<BreweryRating>().toMutableList()
     private val viewModel: HomeViewModel by viewModels {
-        HomeViewModelFactory((this.context?.applicationContext as FindBeerApplication).repository,
+        HomeViewModelFactory(
+            (this.context?.applicationContext as FindBeerApplication).repository,
             this.context?.applicationContext as FindBeerApplication
         )
     }
@@ -46,12 +48,26 @@ class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener, A
         fun newInstance() = HomeFragment()
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = HomeFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        itemsAdapter = ItemAdapter(data, ratingData,this)
+        itemsAdapter = ItemAdapter(data, ratingData, this)
         setupViewModel()
         setupSearch()
         setupStatesSpinner()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun setupViewModel() {
@@ -59,7 +75,7 @@ class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener, A
             data.clear()
             data.addAll(it)
             ratingData.clear()
-            viewModel.breweryRatingData.value?.forEach { rating->
+            viewModel.breweryRatingData.value?.forEach { rating ->
                 ratingData.add(rating)
             }
             itemsAdapter = ItemAdapter(data, ratingData, this)
@@ -68,8 +84,8 @@ class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener, A
     }
 
     private fun setupAdapter() {
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = itemsAdapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        binding.recyclerView.adapter = itemsAdapter
     }
 
     override fun onBreweryClick(brewery: Brewery, rating: Float, nRatings: Int) {
@@ -88,9 +104,9 @@ class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener, A
     }
 
     private fun setupSearch() {
-        val id: Int = brewerySearch.context.resources.getIdentifier("android:id/search_src_text", null, null)
-        brewerySearch.findViewById<TextView>(id).setTextColor(Color.BLACK)
-        brewerySearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        val id: Int = binding.brewerySearch.context.resources.getIdentifier("android:id/search_src_text", null, null)
+        binding.brewerySearch.findViewById<TextView>(id).setTextColor(Color.BLACK)
+        binding.brewerySearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
                     itemsAdapter.filter(query)
@@ -119,8 +135,8 @@ class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener, A
                 StateMapping.states.keys.toList()
             )
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        states_spinner.adapter = spinnerArrayAdapter
-        states_spinner.onItemSelectedListener = this
+        binding.statesSpinner.adapter = spinnerArrayAdapter
+        binding.statesSpinner.onItemSelectedListener = this
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
