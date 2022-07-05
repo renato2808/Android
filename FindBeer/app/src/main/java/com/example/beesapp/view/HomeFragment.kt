@@ -70,6 +70,11 @@ class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener, A
         _binding = null
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.clearDisposables()
+    }
+
     private fun setupViewModel() {
         viewModel.breweryData.observe(viewLifecycleOwner) {
             data.clear()

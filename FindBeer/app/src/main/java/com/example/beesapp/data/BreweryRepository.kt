@@ -11,22 +11,26 @@ import com.example.beesapp.WEB_SERVICE_URL
 import com.example.beesapp.model.Brewery
 import com.example.beesapp.model.BreweryRating
 import com.example.beesapp.model.BreweryRatingDAO
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 class BreweryRepository(private val breweryRatingDAO: BreweryRatingDAO, val app: Application) {
 
     val breweryData = MutableLiveData<List<Brewery>>()
     val breweryRatingData = MutableLiveData<List<BreweryRating>>()
+    private val compositeDisposable: CompositeDisposable
 
     init {
         CoroutineScope(Dispatchers.IO).launch { getBreweriesByState("Alabama") }
+        compositeDisposable = CompositeDisposable()
     }
 
+    // Gets all breweries
     @WorkerThread
     suspend fun getBreweries() {
         if (networkAvailable()) {
@@ -48,45 +52,49 @@ class BreweryRepository(private val breweryRatingDAO: BreweryRatingDAO, val app:
         if (networkAvailable()) {
             val retrofit = Retrofit.Builder()
                 .baseUrl(WEB_SERVICE_URL)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build()
             val service = retrofit.create(BreweryService::class.java)
-            val call: Call<List<Brewery>?> = service.getBreweryDataByState(state)
-            call.enqueue(object : Callback<List<Brewery>?> {
-                override fun onResponse(call: Call<List<Brewery>?>, response: Response<List<Brewery>?>) {
-                    val statusCode: Int = response.code()
-                    val breweries = response.body() ?: emptyList()
-                    val breweriesRating = mutableListOf<BreweryRating>()
-                    runBlocking {
-                        val job = CoroutineScope(SupervisorJob()).launch {
-                            for (brewery in breweries) {
-                                Log.i(LOG_TAG, brewery.name)
-                                if (breweryRatingDAO.get(brewery.name) == null) {
-                                    insertBreweryRating(BreweryRating(brewery.name, 0f, 0))
-                                }
-                                val breweryRating = getBreweryRating(brewery.name)
-                                val breweryName = breweryRating?.name
-                                val rating = breweryRating?.rating
-                                val nRatings = breweryRating?.nRatings
-                                if (breweryName != null && rating != null && nRatings != null) {
-                                    breweriesRating.add(BreweryRating(breweryName, rating, nRatings))
-                                }
-                            }
-                        }
-                        job.join()
-                    }
-
-                    Log.i(LOG_TAG, "breweryRatingData update finished")
-
-                    breweryRatingData.value = breweriesRating
-                    breweryData.postValue(breweries)
-                }
-
-                override fun onFailure(call: Call<List<Brewery>?>, t: Throwable) {
-                    t.message?.let { Log.i(LOG_TAG, it) }
-                }
-            })
+            compositeDisposable.clear()
+            compositeDisposable.add(
+                service.getBreweryDataByState(state).observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe({ response -> onResponse(response ?: emptyList()) }, { t -> onFailure(t) })
+            )
         }
+    }
+
+
+    private fun onFailure(t: Throwable) {
+        t.message?.let { Log.i(LOG_TAG, it) }
+    }
+
+    private fun onResponse(breweries: List<Brewery>) {
+        val breweriesRating = mutableListOf<BreweryRating>()
+        runBlocking {
+            val job = CoroutineScope(SupervisorJob()).launch {
+                for (brewery in breweries) {
+                    Log.i(LOG_TAG, brewery.name)
+                    if (breweryRatingDAO.get(brewery.name) == null) {
+                        insertBreweryRating(BreweryRating(brewery.name, 0f, 0))
+                    }
+                    val breweryRating = getBreweryRating(brewery.name)
+                    val breweryName = breweryRating?.name
+                    val rating = breweryRating?.rating
+                    val nRatings = breweryRating?.nRatings
+                    if (breweryName != null && rating != null && nRatings != null) {
+                        breweriesRating.add(BreweryRating(breweryName, rating, nRatings))
+                    }
+                }
+            }
+            job.join()
+        }
+
+        Log.i(LOG_TAG, "breweryRatingData update finished")
+
+        breweryRatingData.value = breweriesRating
+        breweryData.postValue(breweries)
     }
 
     @Suppress("DEPRECATION")
@@ -126,5 +134,9 @@ class BreweryRepository(private val breweryRatingDAO: BreweryRatingDAO, val app:
             breweryRatingDAO.update(breweryRating, breweryName)
             breweryRatingDAO.update(nRating, breweryName)
         }
+    }
+
+    fun clearDisposables(){
+        compositeDisposable.dispose()
     }
 }

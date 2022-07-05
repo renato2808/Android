@@ -15,6 +15,10 @@ class HomeViewModel(private val dataRepo: BreweryRepository, app: Application) :
     fun changeState(state: String) = viewModelScope.launch {
         dataRepo.getBreweriesByState(state)
     }
+
+    fun clearDisposables(){
+        dataRepo.clearDisposables()
+    }
 }
 
 class HomeViewModelFactory(private val repository: BreweryRepository, private val app: Application) : ViewModelProvider.Factory {
