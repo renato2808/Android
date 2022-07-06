@@ -10,7 +10,7 @@ import retrofit2.http.Query
 
 interface BreweryService {
     @GET("/breweries")
-    suspend fun getBreweryData(): Response<List<Brewery>>
+    fun getBreweryData(): Response<List<Brewery>>
 
     @GET("/breweries")
     fun getBreweryDataByState(@Query("by_state") state: String?) : Observable<List<Brewery>?>

@@ -11,6 +11,7 @@ import com.example.beesapp.WEB_SERVICE_URL
 import com.example.beesapp.model.Brewery
 import com.example.beesapp.model.BreweryRating
 import com.example.beesapp.model.BreweryRatingDAO
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -32,7 +33,7 @@ class BreweryRepository(private val breweryRatingDAO: BreweryRatingDAO, val app:
 
     // Gets all breweries
     @WorkerThread
-    suspend fun getBreweries() {
+    fun getBreweries() {
         if (networkAvailable()) {
             val retrofit = Retrofit.Builder()
                 .baseUrl(WEB_SERVICE_URL)
@@ -60,7 +61,13 @@ class BreweryRepository(private val breweryRatingDAO: BreweryRatingDAO, val app:
             compositeDisposable.add(
                 service.getBreweryDataByState(state).observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
-                    .subscribe({ response -> onResponse(response ?: emptyList()) }, { t -> onFailure(t) })
+                    .subscribe({ response ->
+                        CoroutineScope(SupervisorJob()).launch {
+                            onResponse(
+                                response ?: emptyList()
+                            )
+                        }
+                    }, { t -> onFailure(t) })
             )
         }
     }
@@ -70,31 +77,36 @@ class BreweryRepository(private val breweryRatingDAO: BreweryRatingDAO, val app:
         t.message?.let { Log.i(LOG_TAG, it) }
     }
 
-    private fun onResponse(breweries: List<Brewery>) {
-        val breweriesRating = mutableListOf<BreweryRating>()
-        runBlocking {
-            val job = CoroutineScope(SupervisorJob()).launch {
-                for (brewery in breweries) {
-                    Log.i(LOG_TAG, brewery.name)
-                    if (breweryRatingDAO.get(brewery.name) == null) {
-                        insertBreweryRating(BreweryRating(brewery.name, 0f, 0))
+    private suspend fun onResponse(breweries: List<Brewery>) {
+        compositeDisposable.add(
+            updateBreweryStateDatabase(breweries).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({ response ->
+                    run {
+                        breweryRatingData.value = response
+                        breweryData.postValue(breweries)
                     }
-                    val breweryRating = getBreweryRating(brewery.name)
-                    val breweryName = breweryRating?.name
-                    val rating = breweryRating?.rating
-                    val nRatings = breweryRating?.nRatings
-                    if (breweryName != null && rating != null && nRatings != null) {
-                        breweriesRating.add(BreweryRating(breweryName, rating, nRatings))
-                    }
-                }
-            }
-            job.join()
-        }
-
+                }, { t -> onFailure(t) })
+        )
         Log.i(LOG_TAG, "breweryRatingData update finished")
+    }
 
-        breweryRatingData.value = breweriesRating
-        breweryData.postValue(breweries)
+    private suspend fun updateBreweryStateDatabase(breweries: List<Brewery>): Observable<List<BreweryRating>> {
+        val breweriesRating = mutableListOf<BreweryRating>()
+        for (brewery in breweries) {
+            Log.i(LOG_TAG, brewery.name)
+            if (breweryRatingDAO.get(brewery.name) == null) {
+                insertBreweryRating(BreweryRating(brewery.name, 0f, 0))
+            }
+            val breweryRating = getBreweryRating(brewery.name)
+            val breweryName = breweryRating?.name
+            val rating = breweryRating?.rating
+            val nRatings = breweryRating?.nRatings
+            if (breweryName != null && rating != null && nRatings != null) {
+                breweriesRating.add(BreweryRating(breweryName, rating, nRatings))
+            }
+        }
+        return Observable.just(breweriesRating)
     }
 
     @Suppress("DEPRECATION")
@@ -136,7 +148,7 @@ class BreweryRepository(private val breweryRatingDAO: BreweryRatingDAO, val app:
         }
     }
 
-    fun clearDisposables(){
+    fun clearDisposables() {
         compositeDisposable.dispose()
     }
 }
