@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">JavaKeywords</string>
+    <string name="type_word">type a word</string>
+    <string name="score">Score: %s/50</string>
+</resources>

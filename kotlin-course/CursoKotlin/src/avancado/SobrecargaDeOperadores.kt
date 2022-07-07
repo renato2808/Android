@@ -372,15 +372,32 @@ fun palindromeRearranging(inputString: String): Boolean {
     return (k==0 && size%2 == 0) || (k==1 && size%2 == 1)
 }
 
+fun isEvenlyWeighed(yourLeft: Int, yourRight: Int, friendsLeft: Int, friendsRight: Int): Boolean {
+    return yourLeft == friendsLeft && yourRight == friendsRight || yourLeft == friendsRight && yourRight == friendsLeft
+}
+fun isIPV4(inputString: String): Boolean {
+    var res = true
 
+    val list = inputString.split('.')
+
+    if (list.size != 4) {
+        res = false
+    } else {
+        list.forEach {
+            try{
+                if(it.isEmpty() || (it.length > 1 && it[0] == '0') || it.toInt() > 255){
+                    res = false
+                }
+            } catch (e: NumberFormatException){
+                res = false
+            }
+        }
+    }
+
+    return res
+}
 
 fun main(args: Array<String>) {
-//    val ponto1 = Ponto(10, 20)
-//    val ponto2 = Ponto(10, 20)
-//
-//    println(-ponto1)
-//    println(ponto1 + ponto2)
-//    println(ponto1)
     println(palindrome("abba"))
     val input = mutableListOf(
         "young",
