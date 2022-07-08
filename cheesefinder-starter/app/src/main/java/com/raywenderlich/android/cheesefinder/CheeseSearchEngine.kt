@@ -41,7 +41,8 @@ import io.reactivex.schedulers.Schedulers
 
 class CheeseSearchEngine(private val context: Context) {
 
-  fun search(query: String): Observable<List<Cheese>?> {
+  fun search(query: String): List<Cheese> {
+    Thread.sleep(1_000)
     Log.d("Searching", "Searching for $query")
     return CheeseDatabase.getInstance(context).cheeseDao().findCheese("%$query%")
   }

@@ -30,7 +30,6 @@
 
 package com.raywenderlich.android.cheesefinder
 
-import android.util.Log
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -46,19 +45,18 @@ class CheeseActivity : BaseSearchActivity() {
         // 1
         val searchTextObservable = createButtonClickObservable()
 
-        compositeDisposable.add(searchTextObservable
+        compositeDisposable.add(  searchTextObservable
+            // 1
+            .observeOn(AndroidSchedulers.mainThread())
             // 2
-            .subscribe { query ->
+            .doOnNext { showProgress() }
+            .observeOn(Schedulers.io())
+            .map { cheeseSearchEngine.search(it) }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
                 // 3
-                compositeDisposable.add(
-                    cheeseSearchEngine.search(query).observeOn(AndroidSchedulers.mainThread())
-                        .subscribeOn(Schedulers.io()).subscribe(
-                        {
-                            showResult(it)
-                        },
-                        { t -> Log.i("ERROR", t.message) }
-                    )
-                )
+                hideProgress()
+                showResult(it)
             }
         )
     }

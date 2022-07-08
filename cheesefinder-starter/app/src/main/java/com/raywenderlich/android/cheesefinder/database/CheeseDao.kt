@@ -41,7 +41,7 @@ import io.reactivex.Observable
 interface CheeseDao {
 
   @Query("SELECT * FROM cheeses WHERE name LIKE :name")
-  fun findCheese(name: String): Observable<List<Cheese>?>
+  fun findCheese(name: String): List<Cheese>
 
   @Query("SELECT favorite FROM cheeses WHERE :id LIMIT 1")
   fun isFavorite(id: Long): Int
