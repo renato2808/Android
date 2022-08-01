@@ -1,27 +1,36 @@
 package com.example.beesapp.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.beesapp.data.BreweryRepository
+import com.example.beesapp.model.LastState
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val dataRepo: BreweryRepository, app: Application) : AndroidViewModel(app)  {
+class HomeViewModel(private val dataRepo: BreweryRepository, app: Application) :
+    AndroidViewModel(app) {
     val breweryData = dataRepo.breweryData
     val breweryRatingData = dataRepo.breweryRatingData
+    private val stateFlow = dataRepo.stateFlow
+    val stateModel = stateFlow.asLiveData()
 
     fun changeState(state: String) = viewModelScope.launch {
         dataRepo.getBreweriesByState(state)
     }
 
-    fun clearDisposables(){
+    fun updateLastSelectedState(state: String) = viewModelScope.launch {
+        dataRepo.updateLastSelectedState(state)
+    }
+
+    fun clearDisposables() {
         dataRepo.clearDisposables()
     }
 }
 
-class HomeViewModelFactory(private val repository: BreweryRepository, private val app: Application) : ViewModelProvider.Factory {
+class HomeViewModelFactory(
+    private val repository: BreweryRepository,
+    private val app: Application
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

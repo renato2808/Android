@@ -8,16 +8,21 @@ import androidx.lifecycle.viewModelScope
 import com.example.beesapp.data.BreweryRepository
 import kotlinx.coroutines.launch
 
-class DetailsViewModel(private val dataRepo: BreweryRepository, app: Application) : AndroidViewModel(app) {
+class DetailsViewModel(private val dataRepo: BreweryRepository, app: Application) :
+    AndroidViewModel(app) {
     val breweryData = dataRepo.breweryData
     val breweryRatingData = dataRepo.breweryRatingData
 
-    fun updateBreweryRating(breweryRating: Float, nRating: Int, breweryName: String) = viewModelScope.launch {
-        dataRepo.updateBreweryRating(breweryRating, nRating, breweryName)
-    }
+    fun updateBreweryRating(breweryRating: Float, nRating: Int, breweryName: String) =
+        viewModelScope.launch {
+            dataRepo.updateBreweryRating(breweryRating, nRating, breweryName)
+        }
 }
 
-class DetailsViewModelFactory(private val repository: BreweryRepository, private val app: Application) :
+class DetailsViewModelFactory(
+    private val repository: BreweryRepository,
+    private val app: Application
+) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(DetailsViewModel::class.java)) {

@@ -27,7 +27,8 @@ import com.example.beesapp.viewmodel.HomeViewModelFactory
 internal const val HTTP_PREFIX = "http://www."
 internal const val HTTPS_PREFIX = "httpS://www."
 
-class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener, AdapterView.OnItemSelectedListener {
+class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener,
+    AdapterView.OnItemSelectedListener {
 
     private var _binding: HomeFragmentBinding? = null
 
@@ -43,7 +44,7 @@ class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener, A
             this.context?.applicationContext as FindBeerApplication
         )
     }
-
+    private var check = 0
     companion object {
         fun newInstance() = HomeFragment()
     }
@@ -76,6 +77,9 @@ class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener, A
     }
 
     private fun setupViewModel() {
+        viewModel.stateModel.observe(viewLifecycleOwner) {
+            viewModel.stateModel.value?.let { newState -> viewModel.changeState(newState.state) }
+        }
         viewModel.breweryData.observe(viewLifecycleOwner) {
             data.clear()
             data.addAll(it)
@@ -109,7 +113,11 @@ class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener, A
     }
 
     private fun setupSearch() {
-        val id: Int = binding.brewerySearch.context.resources.getIdentifier("android:id/search_src_text", null, null)
+        val id: Int = binding.brewerySearch.context.resources.getIdentifier(
+            "android:id/search_src_text",
+            null,
+            null
+        )
         binding.brewerySearch.findViewById<TextView>(id).setTextColor(Color.BLACK)
         binding.brewerySearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -142,11 +150,21 @@ class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener, A
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.statesSpinner.adapter = spinnerArrayAdapter
         binding.statesSpinner.onItemSelectedListener = this
+
+        viewModel.stateModel.observe(viewLifecycleOwner) {
+            viewModel.stateModel.value?.let { newState ->
+                val spinnerPosition: Int = spinnerArrayAdapter.getPosition(newState.state)
+                binding.statesSpinner.setSelection(spinnerPosition)
+            }
+        }
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         val state = StateMapping.states.keys.toList()[position]
-        viewModel.changeState(state)
+        if(check > 0) {
+            viewModel.updateLastSelectedState(state)
+        }
+        check++
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {

@@ -6,8 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 // Annotates class to be a Room Database with a table (entity) of the Word class
-@Database(entities = [BreweryRating::class], version = 1, exportSchema = false)
-public abstract class BreweryRatingDatabase : RoomDatabase() {
+@Database(entities = [BreweryRating::class], version = 3, exportSchema = false)
+abstract class BreweryRatingDatabase : RoomDatabase() {
 
     abstract fun wordDao(): BreweryRatingDAO
 
@@ -24,8 +24,8 @@ public abstract class BreweryRatingDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     BreweryRatingDatabase::class.java,
-                    "word_database"
-                ).build()
+                    "brewery_rating_database"
+                ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 // return instance
                 instance
