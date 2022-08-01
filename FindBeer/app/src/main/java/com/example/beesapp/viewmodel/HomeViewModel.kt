@@ -3,8 +3,6 @@ package com.example.beesapp.viewmodel
 import android.app.Application
 import androidx.lifecycle.*
 import com.example.beesapp.data.BreweryRepository
-import com.example.beesapp.model.LastState
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val dataRepo: BreweryRepository, app: Application) :

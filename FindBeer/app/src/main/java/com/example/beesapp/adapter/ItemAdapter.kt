@@ -10,7 +10,6 @@ import com.example.beesapp.R
 import com.example.beesapp.model.Brewery
 import com.example.beesapp.model.BreweryRating
 import com.example.beesapp.view.HomeFragment
-import java.util.*
 
 class ItemAdapter(private var dataset: List<Brewery>, private var ratingData: List<BreweryRating>, fragment: HomeFragment) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
