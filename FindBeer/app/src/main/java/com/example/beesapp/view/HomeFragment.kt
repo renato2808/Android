@@ -78,7 +78,7 @@ class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener,
 
     private fun setupViewModel() {
         viewModel.stateModel.observe(viewLifecycleOwner) {
-            viewModel.stateModel.value?.let { newState -> viewModel.changeState(newState.state) }
+            it?.state?.let { newState -> viewModel.changeState(newState) }
         }
         viewModel.breweryData.observe(viewLifecycleOwner) {
             data.clear()
@@ -152,10 +152,8 @@ class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener,
         binding.statesSpinner.onItemSelectedListener = this
 
         viewModel.stateModel.observe(viewLifecycleOwner) {
-            viewModel.stateModel.value?.let { newState ->
-                val spinnerPosition: Int = spinnerArrayAdapter.getPosition(newState.state)
-                binding.statesSpinner.setSelection(spinnerPosition)
-            }
+            val spinnerPosition: Int = spinnerArrayAdapter.getPosition(it?.state)
+            binding.statesSpinner.setSelection(spinnerPosition)
         }
     }
 
