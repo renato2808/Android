@@ -47,9 +47,8 @@ class BreweryRepository(private val breweryRatingDAO: BreweryRatingDAO, val app:
                 throw exception
             }
         }.map { preferences ->
-            // Get the sort order from preferences and convert it to a [SortOrder] object
+            // Get the the last state selected from preferences
             val state = preferences[PreferencesKeys.STATE] ?: "Alabama"
-            //CoroutineScope(Dispatchers.IO).launch { getBreweriesByState(state) }
             LastState(state)
         }
 
@@ -145,19 +144,16 @@ class BreweryRepository(private val breweryRatingDAO: BreweryRatingDAO, val app:
         return networkInfo?.isConnectedOrConnecting ?: false
     }
 
-    @Suppress("RedundantSuspendModifier")
     @WorkerThread
     suspend fun insertBreweryRating(breweryRating: BreweryRating) {
         breweryRatingDAO.insert(breweryRating)
     }
 
-    @Suppress("RedundantSuspendModifier")
     @WorkerThread
     suspend fun getBreweryRating(breweryName: String): BreweryRating? {
         return breweryRatingDAO.get(breweryName)
     }
 
-    @Suppress("RedundantSuspendModifier")
     @WorkerThread
     suspend fun updateBreweryRating(breweryRating: Float, nRating: Int, breweryName: String) {
         val breweryRatings = breweryRatingData.value ?: emptyList()
