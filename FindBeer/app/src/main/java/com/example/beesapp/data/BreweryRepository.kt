@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.beesapp.LOG_TAG
 import com.example.beesapp.WEB_SERVICE_URL
@@ -35,8 +36,11 @@ class BreweryRepository(private val breweryRatingDAO: BreweryRatingDAO, val app:
         val STATE = stringPreferencesKey("state")
     }
 
-    val breweryData = MutableLiveData<List<Brewery>>()
-    val breweryRatingData = MutableLiveData<List<BreweryRating>>()
+    private val mutableBreweryData = MutableLiveData<List<Brewery>>()
+    val breweryData: LiveData<List<Brewery>> = mutableBreweryData
+    private val mutableBreweryRatingData = MutableLiveData<List<BreweryRating>>()
+    val breweryRatingData: LiveData<List<BreweryRating>> = mutableBreweryRatingData
+
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     val stateFlow : Flow<LastState> = lastState.data
         .catch { exception ->
@@ -65,7 +69,7 @@ class BreweryRepository(private val breweryRatingDAO: BreweryRatingDAO, val app:
             for (brewery in serviceData) {
                 Log.i(LOG_TAG, brewery.name)
             }
-            breweryData.postValue(serviceData)
+            mutableBreweryData.postValue(serviceData)
         }
     }
 
@@ -103,8 +107,8 @@ class BreweryRepository(private val breweryRatingDAO: BreweryRatingDAO, val app:
                 .subscribeOn(Schedulers.io())
                 .subscribe({ response ->
                     run {
-                        breweryRatingData.value = response
-                        breweryData.postValue(breweries)
+                        mutableBreweryRatingData.value = response
+                        mutableBreweryData.postValue(breweries)
                     }
                 }, { t -> onFailure(t) })
         )
@@ -164,7 +168,7 @@ class BreweryRepository(private val breweryRatingDAO: BreweryRatingDAO, val app:
             }
         }
         if (breweryRatings.isNotEmpty()) {
-            breweryRatingData.postValue(breweryRatings)
+            mutableBreweryRatingData.postValue(breweryRatings)
         }
         CoroutineScope(SupervisorJob()).launch {
             breweryRatingDAO.update(breweryRating, breweryName)
