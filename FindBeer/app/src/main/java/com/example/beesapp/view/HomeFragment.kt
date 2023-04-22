@@ -159,7 +159,7 @@ class HomeFragment : Fragment(R.layout.home_fragment), OnBreweryClickListener,
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         val state = StateMapping.states.keys.toList()[position]
-        if(check > 0) {
+        if (check > 0) {
             viewModel.updateLastSelectedState(state)
         }
         check++
