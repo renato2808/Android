@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".MainActivity">
+
+    <!-- Game Board -->
+    <GridLayout
+        android:id="@+id/gameBoard"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnCount="7"
+        android:rowCount="7"
+        android:layout_margin="16dp"
+        android:background="#FFFFFF"
+        android:padding="4dp"
+        android:layout_centerInParent="true">
+
+    <!-- Robot 1 -->
+    <ImageView
+        android:id="@+id/robot1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_column="0"
+        android:layout_row="6"
+        android:layout_rowSpan="1"
+        android:layout_columnSpan="1"
+        android:src="@drawable/ic_launcher_foreground"
+        android:layout_margin="8dp" />
+
+    <!-- Robot 2 -->
+    <ImageView
+        android:id="@+id/robot2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_column="6"
+        android:layout_row="0"
+        android:layout_rowSpan="1"
+        android:layout_columnSpan="1"
+        android:src="@drawable/ic_launcher_foreground"
+        android:layout_margin="8dp" />
+
+    <!-- Prize Token -->
+    <ImageView
+        android:id="@+id/prizeToken"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_column="3"
+        android:layout_row="3"
+        android:layout_rowSpan="1"
+        android:layout_columnSpan="1"
+        android:src="@drawable/prize_icon"
+        android:layout_margin="8dp" />
+
+    <!-- Other Grid Cells (Empty Spaces) -->
+    <!-- Add additional ImageViews for other grid cells as needed -->
+</GridLayout>
+
+    <!-- Score Display -->
+<TextView
+android:id="@+id/scoreDisplay"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_centerHorizontal="true"
+android:layout_marginTop="16dp"
+android:text="Robot 1: 0\nRobot 2: 0"
+android:textSize="18sp" />
+
+    <!-- Buttons for Game Controls -->
+    <!-- Add buttons for starting and restarting the game as needed -->
+</RelativeLayout>

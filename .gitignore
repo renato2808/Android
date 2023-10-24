@@ -1,0 +1,10 @@
+**/build/*
+**/.idea/*
+**/.gradle/*
+**/.vscode/*
+**/local.properties
+*/build/*
+*/.idea/*
+*/.gradle/*
+*/.vscode/*
+*/local.properties
