@@ -57,19 +57,19 @@ open class MainActivity : Activity() {
         binding.draws.text = getString(R.string.draw_count, drawCount.toString())
 
         recyclerView = binding.recyclerView
-        // Sets the LinearLayoutManager of the recyclerview
+
         adapter = BoardAdapter()
         recyclerView.adapter = adapter
         startGame()
     }
 
     private fun startGame() {
-        placePrize()
         robot1 = Robot(0, 0)
         robot2 = Robot(6, 6)
         adapter.updateItem(robot1.x, robot1.y, 1)
         adapter.updateItem(robot2.x, robot2.y, 2)
         currentPlayer = robot1
+        placePrize()
         startRound()
     }
 
@@ -105,16 +105,18 @@ open class MainActivity : Activity() {
                         }
                         break
                     }
-                }
 
-                currentPlayer = opponent
-
-                if (move == null && !currentPlayer.canMove(opponent.visitedCells)) { // No robot can move - Draw
+                    if (opponent.canMove(currentPlayer.visitedCells)) {
+                        currentPlayer = opponent
+                    }
+                } else if (!opponent.canMove(currentPlayer.visitedCells)) { // No robot can move - Draw
                     withContext(Dispatchers.Main) {
                         drawCount++
                         restartGame()
                     }
                     break
+                } else {
+                    currentPlayer = opponent
                 }
             }
         }

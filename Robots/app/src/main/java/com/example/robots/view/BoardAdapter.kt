@@ -55,12 +55,22 @@ class BoardAdapter :
         when (items[row][col]) {
             1 -> holder.imageView.setImageResource(R.drawable.ic_blue_circle)
             2 -> holder.imageView.setImageResource(R.drawable.ic_red_circle)
-            3 -> holder.imageView.setImageResource(R.drawable.ic_yellow_circle)
+            3 -> holder.imageView.setImageResource(R.drawable.ic_yellow_circle) // prize
+            4 -> holder.imageView.setImageResource(R.drawable.ic_light_blue_circle) // past robot1 moves
+            5 -> holder.imageView.setImageResource(R.drawable.ic_light_red_circle) // past robot2 moves
             else -> holder.imageView.setImageResource(R.drawable.ic_gray_circle)
         }
     }
 
     fun updateItem(row: Int, col: Int, robot: Int) {
+        for (i in items.indices) {
+            for (j in items[i].indices) {
+                if (items[i][j] == robot) {
+                    items[i][j] = if (robot == 1) 4 else 5
+                    notifyItemChanged(i * 7 + j)
+                }
+            }
+        }
         items[row][col] = robot
         notifyItemChanged(row * 7 + col)
     }
