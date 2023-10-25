@@ -28,7 +28,8 @@ Robots! is a simple Android game where two robots navigate a grid to find a rand
 
 To get started with the Robots! game, follow these steps:
 
-1. Clone the repository:
+1. Clone the repository and find the project inside the Robots project folder.
 
    ```bash
-   git clone https://github.com/your-username/robots-game.git
+   https://gitlab.com/renato.oliveira2808/android.git
+  

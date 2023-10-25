@@ -31,24 +31,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5514742e-fd48-4e82-8809-6109780745f7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../Robots/app/src/main/java/com/example/robots/view/BoardAdapter.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Robots/app/src/main/java/com/example/robots/view/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Robots/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../Robots/app/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Robots/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Robots/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Robots/app/src/main/java/com/example/robots/MainActivity.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Robots/app/src/main/java/com/example/robots/ui/theme/Color.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Robots/app/src/main/java/com/example/robots/ui/theme/Theme.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Robots/app/src/main/java/com/example/robots/ui/theme/Type.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Robots/app/src/main/res/layout/main_board.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Robots/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Robots/app/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Robots/app/src/main/res/drawable/ic_yellow_circle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Robots/app/src/main/java/com/example/robots/view/BoardAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../Robots/app/src/main/java/com/example/robots/view/BoardAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Robots/app/src/main/java/com/example/robots/view/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../Robots/app/src/main/java/com/example/robots/view/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Robots/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Robots/app/src/main/res/layout/activity_main.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,11 +107,11 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "last_opened_file_path": "/home/renatoo/android/FindBeer"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;last_opened_file_path&quot;: &quot;/home/renatoo/android/FindBeer&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
       <option name="TEST_OBJECT" value="class" />

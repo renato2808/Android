@@ -14,39 +14,62 @@
      limitations under the License.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.MainActivity">
 
+    <ImageView
+        android:id="@+id/robot_1"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignBottom="@id/score_1"
+        android:layout_gravity="center"
+        android:layout_toStartOf="@+id/score_1"
+        android:layout_marginEnd="5dp"
+
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_blue_circle" />
+
     <TextView
-        android:id="@+id/score1"
+        android:id="@+id/score_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:text="@string/robot_1"
+        android:text="@string/robot_1_score"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/robot_2"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignBottom="@id/score_2"
+        android:layout_gravity="center"
+        android:layout_toStartOf="@+id/score_2"
+        android:layout_marginEnd="5dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_red_circle" />
+
+    <TextView
+        android:id="@+id/score_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/score_1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="@string/robot_2_score"
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/score2"
+        android:id="@+id/draws"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/score_2"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:text="@string/robot_2"
-        android:layout_below="@+id/score1"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/prizePosition"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:layout_below="@+id/score2"
-        android:text="@string/prize"
+        android:text="@string/draw_count"
         android:textSize="18sp" />
 
 
@@ -54,10 +77,10 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/prizePosition"
+        android:layout_below="@+id/score_2"
         android:layout_marginTop="30dp"
         android:clipToPadding="false"
-        android:padding="30dp"
+        android:padding="40dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="7"
         tools:listitem="@layout/board_item" />

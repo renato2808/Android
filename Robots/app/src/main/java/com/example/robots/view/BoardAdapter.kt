@@ -55,6 +55,7 @@ class BoardAdapter :
         when (items[row][col]) {
             1 -> holder.imageView.setImageResource(R.drawable.ic_blue_circle)
             2 -> holder.imageView.setImageResource(R.drawable.ic_red_circle)
+            3 -> holder.imageView.setImageResource(R.drawable.ic_yellow_circle)
             else -> holder.imageView.setImageResource(R.drawable.ic_gray_circle)
         }
     }
@@ -67,9 +68,11 @@ class BoardAdapter :
     fun clear() {
         for (i in items.indices) {
             for (j in items[i].indices) {
-                items[i][j] = 0
+                if (items[i][j] != 0) {
+                    items[i][j] = 0
+                    notifyItemChanged(i * 7 + j)
+                }
             }
         }
-        notifyDataSetChanged()
     }
 }

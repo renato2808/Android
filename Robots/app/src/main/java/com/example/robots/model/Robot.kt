@@ -1,16 +1,29 @@
 package com.example.robots.model
 
 class Robot(var x: Int, var y: Int) {
-    private val visitedCells = mutableSetOf<Pair<Int, Int>>()
+    val visitedCells = mutableSetOf<Pair<Int, Int>>()
 
-    fun canMove(): Boolean {
-        // Check if the robot can make a valid move
-        // You need to implement this logic based on your game rules
-        // Ensure it's a valid move and not outside the grid
-        return true
+    init {
+        move(x, y)
     }
 
-    fun randomMove(): Pair<Int, Int> {
+    fun canMove(otherRobotMoves: Set<Pair<Int, Int>>): Boolean {
+        return possibleMoves(otherRobotMoves).isNotEmpty()
+    }
+
+    fun randomMove(otherRobotMoves: Set<Pair<Int, Int>>): Pair<Int, Int>? {
+        val possibleMoves = possibleMoves(otherRobotMoves)
+
+        return if (possibleMoves.isNotEmpty()) {
+            val randomMove = possibleMoves.random()
+            move(randomMove.first, randomMove.second)
+            randomMove
+        } else {
+            null
+        }
+    }
+
+    private fun possibleMoves(otherRobotMoves: Set<Pair<Int, Int>>): List<Pair<Int, Int>> {
         val possibleMoves = mutableListOf<Pair<Int, Int>>()
         if (x > 0) possibleMoves.add(Pair(x - 1, y)) // Move up
         if (x < 6) possibleMoves.add(Pair(x + 1, y)) // Move down
@@ -18,30 +31,16 @@ class Robot(var x: Int, var y: Int) {
         if (y < 6) possibleMoves.add(Pair(x, y + 1)) // Move right
 
         val unvisitedMoves = possibleMoves.filter { move ->
-            !visitedCells.contains(move)
+            !(visitedCells.contains(move) || otherRobotMoves.contains(move))
         }
 
-        return if (unvisitedMoves.isNotEmpty()) {
-            val randomMove = unvisitedMoves.random()
-            move(randomMove.first, randomMove.second)
-            randomMove
-        } else {
-            Pair(0, 0)
-        }
+        return unvisitedMoves
     }
 
-    fun visited(row: Int, col: Int): Boolean {
-        return Pair(row, col) in visitedCells
-    }
-
-    private fun move(row: Int, col: Int): Boolean {
-        if (canMove()) {
-            x = row
-            y = col
-            visitedCells.add(Pair(x, y))
-            return true
-        }
-        return false
+    private fun move(row: Int, col: Int) {
+        x = row
+        y = col
+        visitedCells.add(Pair(x, y))
     }
 
     fun wins(prizeX: Int, prizeY: Int): Boolean {

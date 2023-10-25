@@ -21,10 +21,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.robots.R
 import com.example.robots.databinding.ActivityMainBinding
 import com.example.robots.model.Robot
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.random.Random
 
 /**
@@ -41,6 +42,7 @@ open class MainActivity : Activity() {
     private var prizeY: Int = 0
     private var scoreRobot1: Int = 0
     private var scoreRobot2: Int = 0
+    private var drawCount: Int = 0
 
     private var currentPlayer: Robot = robot1
 
@@ -50,8 +52,9 @@ open class MainActivity : Activity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.score1.text = getString(R.string.robot_1, scoreRobot1.toString())
-        binding.score2.text = getString(R.string.robot_2, scoreRobot2.toString())
+        binding.score1.text = getString(R.string.robot_1_score, scoreRobot1.toString())
+        binding.score2.text = getString(R.string.robot_2_score, scoreRobot2.toString())
+        binding.draws.text = getString(R.string.draw_count, drawCount.toString())
 
         recyclerView = binding.recyclerView
         // Sets the LinearLayoutManager of the recyclerview
@@ -64,8 +67,9 @@ open class MainActivity : Activity() {
         placePrize()
         robot1 = Robot(0, 0)
         robot2 = Robot(6, 6)
+        adapter.updateItem(robot1.x, robot1.y, 1)
+        adapter.updateItem(robot2.x, robot2.y, 2)
         currentPlayer = robot1
-        updateScore()
         startRound()
     }
 
@@ -76,51 +80,68 @@ open class MainActivity : Activity() {
     private fun placePrize() {
         prizeX = Random.nextInt(7)
         prizeY = Random.nextInt(7)
-        binding.prizePosition.text = getString(R.string.prize, "$prizeX $prizeY")
+        adapter.updateItem(prizeX, prizeY, 3)
     }
 
     private fun startRound() {
-        GlobalScope.launch(Dispatchers.IO) {
+        CoroutineScope(Dispatchers.IO).launch {
             while (true) {
+                val opponent = if (currentPlayer == robot1) robot2 else robot1
+
                 delay(500) // Half-second interval
-                if (currentPlayer.canMove()) {
-                    val move = currentPlayer.randomMove()
-                    updateBoard(move.first, move.second)
+                val move = currentPlayer.randomMove(opponent.visitedCells)
+                if (move != null) {
+                    withContext(Dispatchers.Main) {
+                        updateBoard(move.first, move.second)
+                    }
                     if (currentPlayer.wins(prizeX, prizeY)) {
-                        restartGame()
+                        if (currentPlayer == robot1) {
+                            scoreRobot1++
+                        } else {
+                            scoreRobot2++
+                        }
+                        withContext(Dispatchers.Main) {
+                            restartGame()
+                        }
                         break
                     }
-                    currentPlayer = if (currentPlayer == robot1) robot2 else robot1
+                }
+
+                currentPlayer = opponent
+
+                if (move == null && !currentPlayer.canMove(opponent.visitedCells)) { // No robot can move - Draw
+                    withContext(Dispatchers.Main) {
+                        drawCount++
+                        restartGame()
+                    }
+                    break
                 }
             }
         }
     }
 
     private fun restartGame() {
-        GlobalScope.launch(Dispatchers.Main) {
-            clearBoard()
-            startGame()
-        }
+        updateScore()
+        clearBoard()
+        startGame()
     }
 
     private fun updateBoard(row: Int, col: Int) {
-        GlobalScope.launch(Dispatchers.Main) {
-            // UI update operations go here
-            if (currentPlayer == robot1) {
-                adapter.updateItem(row, col, 1)
-            } else {
-                adapter.updateItem(row, col, 2)
-            }
+        // UI update operations go here
+        if (currentPlayer == robot1) {
+            adapter.updateItem(row, col, 1)
+        } else {
+            adapter.updateItem(row, col, 2)
         }
     }
 
     private fun updateScore() {
+        binding.draws.text = getString(R.string.draw_count, drawCount.toString())
+
         if (currentPlayer == robot1) {
-            scoreRobot1++
-            binding.score1.text = getString(R.string.robot_1, scoreRobot1.toString())
+            binding.score1.text = getString(R.string.robot_1_score, scoreRobot1.toString())
         } else {
-            scoreRobot2++
-            binding.score2.text = getString(R.string.robot_2, scoreRobot2.toString())
+            binding.score2.text = getString(R.string.robot_2_score, scoreRobot2.toString())
         }
     }
 }
