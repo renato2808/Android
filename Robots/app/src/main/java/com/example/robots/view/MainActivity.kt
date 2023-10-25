@@ -45,6 +45,7 @@ open class MainActivity : Activity() {
     private var drawCount: Int = 0
 
     private var currentPlayer: Robot = robot1
+    private var startedWithRobot1: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,11 +65,9 @@ open class MainActivity : Activity() {
     }
 
     private fun startGame() {
-        robot1 = Robot(0, 0)
-        robot2 = Robot(6, 6)
-        adapter.updateItem(robot1.x, robot1.y, 1)
-        adapter.updateItem(robot2.x, robot2.y, 2)
-        currentPlayer = robot1
+        placeRobots()
+        currentPlayer = if (startedWithRobot1) robot2 else robot1
+        startedWithRobot1 = currentPlayer == robot1
         placePrize()
         startRound()
     }
@@ -77,10 +76,27 @@ open class MainActivity : Activity() {
         adapter.clear()
     }
 
+    private fun placeRobots() {
+        robot1 = Robot(0, 0)
+        robot2 = Robot(6, 6)
+        adapter.moveRobot1(robot1.x, robot1.y)
+        adapter.moveRobot2(robot2.x, robot2.y)
+    }
+
     private fun placePrize() {
-        prizeX = Random.nextInt(7)
-        prizeY = Random.nextInt(7)
-        adapter.updateItem(prizeX, prizeY, 3)
+        prizeX = Random.nextInt(7) // Cannot place prize on (0,0) or (6, 6), initial robots positions
+        prizeY = when (prizeX) {
+            6 -> {
+                Random.nextInt(6)
+            }
+            0 -> {
+                Random.nextInt(1, 7)
+            }
+            else -> {
+                Random.nextInt(7)
+            }
+        }
+        adapter.placePrize(prizeX, prizeY)
     }
 
     private fun startRound() {
@@ -131,9 +147,9 @@ open class MainActivity : Activity() {
     private fun updateBoard(row: Int, col: Int) {
         // UI update operations go here
         if (currentPlayer == robot1) {
-            adapter.updateItem(row, col, 1)
+            adapter.moveRobot1(row, col)
         } else {
-            adapter.updateItem(row, col, 2)
+            adapter.moveRobot2(row, col)
         }
     }
 

@@ -46,8 +46,6 @@ class BoardAdapter :
     }
 
     override fun onBindViewHolder(holder: BoardViewHolder, position: Int) {
-        // You can load images into the ImageViews here based on the position.
-        // For simplicity, I'll use placeholder images.
         val row = position / 7
         val col = position % 7
 
@@ -55,23 +53,42 @@ class BoardAdapter :
         when (items[row][col]) {
             1 -> holder.imageView.setImageResource(R.drawable.ic_blue_circle)
             2 -> holder.imageView.setImageResource(R.drawable.ic_red_circle)
-            3 -> holder.imageView.setImageResource(R.drawable.ic_yellow_circle) // prize
-            4 -> holder.imageView.setImageResource(R.drawable.ic_light_blue_circle) // past robot1 moves
-            5 -> holder.imageView.setImageResource(R.drawable.ic_light_red_circle) // past robot2 moves
+            3 -> holder.imageView.setImageResource(R.drawable.ic_yellow_circle) // Prize
+            4 -> holder.imageView.setImageResource(R.drawable.ic_light_blue_circle) // Past robot1 moves
+            5 -> holder.imageView.setImageResource(R.drawable.ic_light_red_circle) // Past robot2 moves
             else -> holder.imageView.setImageResource(R.drawable.ic_gray_circle)
         }
     }
 
-    fun updateItem(row: Int, col: Int, robot: Int) {
+    fun moveRobot1(row: Int, col: Int) {
         for (i in items.indices) {
             for (j in items[i].indices) {
-                if (items[i][j] == robot) {
-                    items[i][j] = if (robot == 1) 4 else 5
+                if (items[i][j] == 1) {
+                    items[i][j] = 4
                     notifyItemChanged(i * 7 + j)
                 }
             }
         }
-        items[row][col] = robot
+
+        items[row][col] = 1
+        notifyItemChanged(row * 7 + col)
+    }
+
+    fun moveRobot2(row: Int, col: Int) {
+        for (i in items.indices) {
+            for (j in items[i].indices) {
+                if (items[i][j] == 2) {
+                    items[i][j] = 5
+                    notifyItemChanged(i * 7 + j)
+                }
+            }
+        }
+        items[row][col] = 2
+        notifyItemChanged(row * 7 + col)
+    }
+
+    fun placePrize(row: Int, col: Int) {
+        items[row][col] = 3
         notifyItemChanged(row * 7 + col)
     }
 
