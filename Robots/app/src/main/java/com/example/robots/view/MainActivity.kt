@@ -124,8 +124,8 @@ open class MainActivity : Activity() {
             while (true) {
                 delay(500) // Half-second interval
 
-                val opponent = if (currentPlayer == robot1) robot2 else robot1
-                val move = currentPlayer.randomMove(opponent.visitedCells)
+                val otherRobot = if (currentPlayer == robot1) robot2 else robot1
+                val move = currentPlayer.randomMove(otherRobot.visitedCells)
 
                 if (move != null) {
                     withContext(Dispatchers.Main) {
@@ -143,17 +143,17 @@ open class MainActivity : Activity() {
                         break
                     }
 
-                    if (opponent.canMove(currentPlayer.visitedCells)) {
-                        currentPlayer = opponent
+                    if (otherRobot.canMove(currentPlayer.visitedCells)) {
+                        currentPlayer = otherRobot
                     }
-                } else if (!opponent.canMove(currentPlayer.visitedCells)) { // No robot can move - Draw
+                } else if (!otherRobot.canMove(currentPlayer.visitedCells)) { // No robot can move - Draw
                     withContext(Dispatchers.Main) {
                         drawCount++
                         restartRound()
                     }
                     break
                 } else {
-                    currentPlayer = opponent
+                    currentPlayer = otherRobot
                 }
             }
         }
@@ -166,7 +166,6 @@ open class MainActivity : Activity() {
     }
 
     private fun updateBoard(row: Int, col: Int) {
-        // UI update operations go here
         if (currentPlayer == robot1) {
             adapter.moveRobot1(row, col)
         } else {
