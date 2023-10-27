@@ -19,6 +19,8 @@ Robots! is a simple Android game where two robots navigate a grid to find a rand
 - Legal moves: Robots can move left, right, up, or down to an unoccupied and unvisited space. Diagonal moves are not allowed.
 - Scoring: The first robot to reach the prize wins one point.
 - Continuously running simulation: The game session keeps track of the total score for each robot.
+- If no robot can move, it is a draw and the Draw counter increases.
+- There is a timer and a button to restart the game as well.
 
 ## Demo
 

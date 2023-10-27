@@ -3,4 +3,7 @@
     <string name="robot_1_score">Robot 1 score: %s</string>
     <string name="robot_2_score">Robot 2 score: %s</string>
     <string name="draw_count">Draws: %s</string>
+    <string name="timer">00:00:00</string>
+    <string name="timer_title">Timer</string>
+    <string name="restart">Restart Game</string>
 </resources>

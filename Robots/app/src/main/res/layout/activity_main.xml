@@ -63,7 +63,7 @@
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/draws"
+        android:id="@+id/draws_counter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/score_2"
@@ -76,7 +76,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/score_2"
         android:layout_marginTop="30dp"
         android:clipToPadding="false"
@@ -84,4 +84,33 @@
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="7"
         tools:listitem="@layout/board_item" />
+
+    <TextView
+        android:id="@+id/timer_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/recycler_view"
+        android:layout_centerInParent="true"
+        android:text="@string/timer_title"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/timer_title"
+        android:layout_centerInParent="true"
+        android:text="@string/timer"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/restartButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/timer"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:textSize="18sp"
+        android:text="@string/restart"
+        android:onClick="restartGame" />
 </RelativeLayout>

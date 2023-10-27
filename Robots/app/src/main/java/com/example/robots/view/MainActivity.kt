@@ -17,24 +17,27 @@ package com.example.robots.view
 
 import android.app.Activity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.example.robots.R
 import com.example.robots.databinding.ActivityMainBinding
 import com.example.robots.model.Robot
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.random.Random
 
-/**
- * Main Activity and entry point for the app. Displays a RecyclerView of letters.
- */
 open class MainActivity : Activity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: BoardAdapter
     private lateinit var binding: ActivityMainBinding
+    private var secondsCounter = 0
+    private var moveRobotsJob: Job? = null
 
     private var robot1: Robot = Robot(0, 0)
     private var robot2: Robot = Robot(6, 6)
@@ -49,19 +52,36 @@ open class MainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        binding.score1.text = getString(R.string.robot_1_score, scoreRobot1.toString())
-        binding.score2.text = getString(R.string.robot_2_score, scoreRobot2.toString())
-        binding.draws.text = getString(R.string.draw_count, drawCount.toString())
-
         recyclerView = binding.recyclerView
 
+        val handler = Handler(Looper.getMainLooper())
+        val timerRunnable = object : Runnable {
+            override fun run() {
+                val totalSeconds = secondsCounter
+                val hours = totalSeconds / 3600
+                val minutes = (totalSeconds % 3600) / 60
+                val seconds = totalSeconds % 60
+                val formattedTime = String.format("%02d:%02d:%02d", hours, minutes, seconds)
+
+                secondsCounter++
+                binding.timer.text = formattedTime
+                handler.postDelayed(this, 1000) // Update every second (1000 milliseconds)
+            }
+        }
         adapter = BoardAdapter()
         recyclerView.adapter = adapter
+
+        resetScores()
         startGame()
+        handler.postDelayed(timerRunnable, 1000)
+    }
+
+    private fun resetScores() {
+        binding.score1.text = getString(R.string.robot_1_score, "0")
+        binding.score2.text = getString(R.string.robot_2_score, "0")
+        binding.drawsCounter.text = getString(R.string.draw_count, "0")
     }
 
     private fun startGame() {
@@ -100,12 +120,13 @@ open class MainActivity : Activity() {
     }
 
     private fun startRound() {
-        CoroutineScope(Dispatchers.IO).launch {
+        moveRobotsJob = CoroutineScope(Dispatchers.IO).launch {
             while (true) {
-                val opponent = if (currentPlayer == robot1) robot2 else robot1
-
                 delay(500) // Half-second interval
+
+                val opponent = if (currentPlayer == robot1) robot2 else robot1
                 val move = currentPlayer.randomMove(opponent.visitedCells)
+
                 if (move != null) {
                     withContext(Dispatchers.Main) {
                         updateBoard(move.first, move.second)
@@ -117,7 +138,7 @@ open class MainActivity : Activity() {
                             scoreRobot2++
                         }
                         withContext(Dispatchers.Main) {
-                            restartGame()
+                            restartRound()
                         }
                         break
                     }
@@ -128,7 +149,7 @@ open class MainActivity : Activity() {
                 } else if (!opponent.canMove(currentPlayer.visitedCells)) { // No robot can move - Draw
                     withContext(Dispatchers.Main) {
                         drawCount++
-                        restartGame()
+                        restartRound()
                     }
                     break
                 } else {
@@ -138,7 +159,7 @@ open class MainActivity : Activity() {
         }
     }
 
-    private fun restartGame() {
+    private fun restartRound() {
         updateScore()
         clearBoard()
         startGame()
@@ -154,12 +175,22 @@ open class MainActivity : Activity() {
     }
 
     private fun updateScore() {
-        binding.draws.text = getString(R.string.draw_count, drawCount.toString())
+        binding.drawsCounter.text = getString(R.string.draw_count, drawCount.toString())
 
         if (currentPlayer == robot1) {
             binding.score1.text = getString(R.string.robot_1_score, scoreRobot1.toString())
         } else {
             binding.score2.text = getString(R.string.robot_2_score, scoreRobot2.toString())
         }
+    }
+
+    fun restartGame(view: View) {
+        secondsCounter = 0
+        scoreRobot1 = 0
+        scoreRobot2 = 0
+        drawCount = 0
+        moveRobotsJob?.cancel()
+        resetScores()
+        restartRound()
     }
 }

@@ -4,7 +4,7 @@ class Robot(var x: Int, var y: Int) {
     val visitedCells = mutableSetOf<Pair<Int, Int>>()
 
     init {
-        move(x, y)
+        visitedCells.add(Pair(x, y))
     }
 
     fun canMove(otherRobotMoves: Set<Pair<Int, Int>>): Boolean {
@@ -21,6 +21,10 @@ class Robot(var x: Int, var y: Int) {
         } else {
             null
         }
+    }
+
+    fun wins(prizeX: Int, prizeY: Int): Boolean {
+        return x == prizeX && y == prizeY
     }
 
     private fun possibleMoves(otherRobotMoves: Set<Pair<Int, Int>>): List<Pair<Int, Int>> {
@@ -41,9 +45,5 @@ class Robot(var x: Int, var y: Int) {
         x = row
         y = col
         visitedCells.add(Pair(x, y))
-    }
-
-    fun wins(prizeX: Int, prizeY: Int): Boolean {
-        return x == prizeX && y == prizeY
     }
 }
