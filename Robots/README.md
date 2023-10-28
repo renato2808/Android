@@ -8,8 +8,6 @@ Robots! is a simple Android game where two robots navigate a grid to find a rand
 - [Demo](#demo)
 - [Getting Started](#getting-started)
 - [Project Structure](#project-structure)
-- [Dependencies](#dependencies)
-- [License](#license)
 
 ## Features
 
@@ -39,7 +37,7 @@ To get started with the Robots! game, follow these steps:
   
 ## Project Structure
 
-The application, due to its simplicity and no data being retrieved asynchronously from a server,  was strictured as a **MV (Model View) application**:
-   - **Model:** A Robot class representing the robot and encapsulating in its interface all the needed methods related to such as **radomMove(), canMove(), visitedCells(), wins()**. 
-   - **View**: The board consists in a GridLayout RecyclerView with each position of the board represented by an item of the RecycleView. The RecyclerView adapter (BoardAdapter.kt) implements the methods responsible for applying the updates to the GridLayout UI when each robot moves (**moveRobot()**), when the prize (**placePrize()**) is placed or when the game is restarted (**clear()**).
+The application, due to the fact that no data had to be retrieved asynchronously from a server or database,  was structured as a **MV (Model View)** application:
+   - **Model:** A Robot class representing the robot and encapsulating in its interface all the needed methods related to a robot such as **radomMove(), canMove(), visitedCells(), wins()**. 
+   - **View**: The board consists in a GridLayout RecyclerView with each position of the board represented by an item of the RecycleView. The RecyclerView adapter (BoardAdapter.kt) implements the methods responsible for applying the updates to the GridLayout UI when each robot moves (**moveRobot()**), when the prize is placed (**placePrize()**) or when the game is restarted (**clear()**).
    - The game dynamic and the robots movements is implemented in the **startRound()** method, which is a method that uses coroutines to  run in a background thread so that the UI thread is not overloaded with processing necessary to move the robots. This method runs continuously moving the robots until on of then reaches a prize or the game reaches a draw state.
