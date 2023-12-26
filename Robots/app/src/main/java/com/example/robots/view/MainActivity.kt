@@ -160,6 +160,7 @@ open class MainActivity : Activity() {
     }
 
     private fun restartRound() {
+        moveRobotsJob?.cancel()
         updateScore()
         clearBoard()
         startGame()
@@ -188,7 +189,6 @@ open class MainActivity : Activity() {
         scoreRobot1 = 0
         scoreRobot2 = 0
         drawCount = 0
-        moveRobotsJob?.cancel()
         resetScores()
         restartRound()
     }
