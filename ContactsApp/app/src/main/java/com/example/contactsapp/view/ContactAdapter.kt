@@ -1,12 +1,14 @@
 package com.example.contactsapp.view
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.contactsapp.R
 import com.example.contactsapp.databinding.ItemContactBinding
 import com.example.contactsapp.model.Contact
 
-class ContactAdapter : RecyclerView.Adapter<ContactAdapter.ContactViewHolder>() {
+class ContactAdapter(private val context: Context) : RecyclerView.Adapter<ContactAdapter.ContactViewHolder>() {
     private var contacts: List<Contact> = emptyList()
     private var onContactSelected: OnContactSelected? = null
 
@@ -41,8 +43,9 @@ class ContactAdapter : RecyclerView.Adapter<ContactAdapter.ContactViewHolder>() 
     inner class ContactViewHolder(private val binding: ItemContactBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(contact: Contact) {
-            binding.nameTextView.text = "${contact.name.first} ${contact.name.last}"
-            binding.emailTextView.text = contact.email
+            binding.nameTextView.text =
+                context.getString(R.string.contact_name, contact.name.title, contact.name.first, contact.name.last)
+            binding.emailTextView.text = context.getString(R.string.contact_email, contact.email)
             binding.contactButton.setOnClickListener {
                 onContactSelected?.selectContact(contact)
             }

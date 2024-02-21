@@ -28,8 +28,8 @@ class ContactDetailsActivity : AppCompatActivity() {
     private fun displayContactDetails(contact: Contact) {
         // Set contact details in UI
         binding.apply {
-
-            textViewName.text = getString(R.string.contact_name, contact.name.title, contact.name.first, contact.name.last)
+            textViewName.text =
+                getString(R.string.contact_name, contact.name.title, contact.name.first, contact.name.last)
             textViewEmail.text = getString(R.string.contact_email, contact.email)
             textViewGender.text = getString(R.string.contact_gender, contact.gender)
             textViewPhone.text = getString(R.string.phone, contact.phone)
@@ -38,11 +38,11 @@ class ContactDetailsActivity : AppCompatActivity() {
                     R.string.contact_address,
                     contact.location.street,
                     contact.location.city,
-                    contact.location.state
+                    contact.location.state,
+                    contact.location.postcode.toString()
                 )
 
         }
-        // Display other contact attributes as needed
     }
 
     private inline fun <reified T : Serializable> Intent.serializable(key: String): T? = when {
