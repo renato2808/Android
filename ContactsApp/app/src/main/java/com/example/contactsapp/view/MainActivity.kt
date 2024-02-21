@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
-    private val adapter =  ContactAdapter()
+    private val adapter =  ContactAdapter(this)
     private val viewModel: ContactViewModel by viewModels {
         ContactViewModelFactory(
             (this.applicationContext as ContactApp).contactRepository,

@@ -2,18 +2,22 @@ package com.example.contactsapp.repository
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.example.contactsapp.model.ContactListResponse
-import com.example.contactsapp.model.Contact
 import com.example.contactsapp.api.ContactListApi
-import com.example.contactsapp.model.Id
+import com.example.contactsapp.data.ContactDao
+import com.example.contactsapp.model.Contact
+import com.example.contactsapp.model.ContactData
+import com.example.contactsapp.model.ContactListResponse
 import com.example.contactsapp.model.Location
 import com.example.contactsapp.model.Name
-import com.example.contactsapp.model.Picture
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ContactRepository {
+class ContactRepository(private val contactDao: ContactDao) {
 
     companion object {
         private const val TAG = "ContactRepository"
@@ -23,23 +27,43 @@ class ContactRepository {
     val contactsLiveData: MutableLiveData<List<Contact>?> = contacts
     private val contactListApi = RetrofitClient.retrofit.create(ContactListApi::class.java)
 
-    fun fetchContacts(){
-        val call = contactListApi.getContacts("lydia", 10, 1)
-        call.enqueue(object : Callback<ContactListResponse> {
-            override fun onResponse(call: Call<ContactListResponse>, response: Response<ContactListResponse>) {
-                if (response.isSuccessful) {
-                    val contactsResponse = response.body()?.results ?: emptyList()
-                    contacts.postValue(formatContactList(contactsResponse))
-                } else {
-                    Log.e(TAG, "Failed to fetch contacts!")
-                    contacts.postValue(null)
-                }
-            }
+    suspend fun fetchContacts() {
+        withContext(Dispatchers.IO) {
+            val call = contactListApi.getContacts("lydia", 100, 1)
+            call.enqueue(object : Callback<ContactListResponse> {
+                override fun onResponse(call: Call<ContactListResponse>, response: Response<ContactListResponse>) {
+                    if (response.isSuccessful) {
+                        val contactsResponse = response.body()?.results ?: emptyList()
+                        contacts.postValue(formatContactList(contactsResponse))
 
-            override fun onFailure(call: Call<ContactListResponse>, t: Throwable) {
-                Log.e(TAG, "Failed to fetch contacts!")
-            }
-        })
+                        CoroutineScope(Dispatchers.IO).launch {
+                            contactDao.deleteAll()
+                            contactsResponse.forEach {
+                                contactDao.insertContact(ContactData(data = it.toJson()))
+                            }
+                        }
+                    } else {
+                        Log.e(TAG, "Failed to fetch contacts from server!")
+                        CoroutineScope(Dispatchers.IO).launch {
+                            val contactData = contactDao.getAllContacts().map {
+                                Contact.fromJson(it.data)
+                            }
+                            contacts.postValue(formatContactList(contactData))
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ContactListResponse>, t: Throwable) {
+                    Log.e(TAG, "Failed to call server api!")
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val contactData = contactDao.getAllContacts().map {
+                            Contact.fromJson(it.data)
+                        }
+                        contacts.postValue(formatContactList(contactData))
+                    }
+                }
+            })
+        }
     }
 
     fun formatContactList(contactList: List<Contact>): List<Contact> {

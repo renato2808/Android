@@ -1,5 +1,6 @@
 package com.example.contactsapp.model
 
+import com.google.gson.Gson
 import java.io.Serializable
 
 data class Contact(
@@ -15,4 +16,14 @@ data class Contact(
     val id: Id,
     val picture: Picture,
     val nat: String
-) : Serializable
+) : Serializable {
+    fun toJson(): String {
+        return Gson().toJson(this)
+    }
+
+    companion object {
+        fun fromJson(json: String): Contact {
+            return Gson().fromJson(json, Contact::class.java)
+        }
+    }
+}

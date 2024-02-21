@@ -3,13 +3,15 @@ package com.example.contactsapp.viewmodel
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.example.contactsapp.repository.ContactRepository
+import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
 
 class ContactViewModel (private val contactRepository: ContactRepository, app: Application) : ViewModel() {
     val contacts = contactRepository.contactsLiveData
 
-    fun fetchContacts() {
+    fun fetchContacts() = viewModelScope.launch {
         contactRepository.fetchContacts()
     }
 }
