@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">ContactsApp</string>
+    <string name="contact_name">%1$s %2$s %3$s</string>
+    <string name="contact_email">Email: %1$s</string>
+    <string name="contact_gender">Gender: %1$s</string>
+    <string name="phone">Phone: %1$s</string>
+    <string name="contact_address">Address: %1$s, %2$s, %3$s</string>
 </resources>

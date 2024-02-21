@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:layout_marginTop="8dp"
-        tools:text="john.doe@example.com" />
+        tools:text="Email: john.doe@example.com" />
 
     <TextView
         android:id="@+id/textViewGender"
@@ -31,7 +31,7 @@
         tools:text="Gender: Male" />
 
     <TextView
-        android:id="@+id/textViewLocation"
+        android:id="@+id/textViewAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
