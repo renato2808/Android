@@ -58,7 +58,9 @@ class ContactRepository(
                         val code = response.code()
                         val error = response.errorBody()?.string()
                         if (error != null) {
-                            Log.d(TAG, "Failed to fetch contacts from server $code response with error $error")
+                            Log.d(TAG, "Fetch contacts $code response with error $error")
+                        } else {
+                            Log.d(TAG, "Fetch contacts $code response.")
                         }
                     }.mapCatching {
                         it.body()

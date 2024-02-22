@@ -32,8 +32,8 @@ class ContactAdapter(private val context: Context) : RecyclerView.Adapter<Contac
         notifyDataSetChanged()
     }
 
-    fun setOnClickListener(onPaymentMethod: OnContactSelected) {
-        this.onContactSelected = onPaymentMethod
+    fun setOnClickListener(onContactSelected: OnContactSelected) {
+        this.onContactSelected = onContactSelected
     }
 
     interface OnContactSelected {
