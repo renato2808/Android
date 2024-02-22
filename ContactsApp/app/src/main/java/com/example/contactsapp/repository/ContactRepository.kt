@@ -1,73 +1,106 @@
 package com.example.contactsapp.repository
 
-import android.app.Application
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.contactsapp.api.ContactListApi
 import com.example.contactsapp.data.ContactDao
 import com.example.contactsapp.model.Contact
 import com.example.contactsapp.model.ContactData
-import com.example.contactsapp.model.ContactListResponse
 import com.example.contactsapp.model.Location
 import com.example.contactsapp.model.Login
 import com.example.contactsapp.model.Name
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.net.HttpURLConnection
+import java.net.URL
 
-class ContactRepository(private val contactDao: ContactDao, val app: Application) {
+class ContactRepository(
+    private val contactDao: ContactDao,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+) {
 
     companion object {
         private const val TAG = "ContactRepository"
+        private const val PAGE_SIZE = 10
     }
 
     private val contacts = MutableLiveData<List<Contact>?>()
     val contactsLiveData: MutableLiveData<List<Contact>?> = contacts
     private val contactListApi = RetrofitClient.retrofit.create(ContactListApi::class.java)
 
-    suspend fun fetchContacts(maxPage: Int = 1) {
-        var page = 1
+    suspend fun fetchContacts(maxPage: Int) {
         var contactsLoading = true
-        val allContacts: MutableList<Contact> = mutableListOf()
-        withContext(Dispatchers.IO) {
-            while (contactsLoading && page <= maxPage) {
-                try {
-                    val response = contactListApi.getContacts("lydia", 10, page).execute()
+        var allContacts: MutableList<Contact>
 
-                    if (response.isSuccessful) {
-                        val contactsResponse = response.body()?.results ?: emptyList()
+        withContext(dispatcher) {
+            //Getting contacts from database
+            allContacts = contactDao.getAllContacts().map {
+                Contact.fromJson(it.data)
+            }.toMutableList()
+            val lastPageLoaded = allContacts.size / PAGE_SIZE
+
+            if (allContacts.isNotEmpty() && maxPage <= lastPageLoaded) {
+                contacts.postValue(formatContactList(allContacts))
+            } else {
+                var page = lastPageLoaded + 1
+                while (contactsLoading && page <= maxPage) {
+                    contactListApi.getContacts("lydia", PAGE_SIZE, page).runCatching {
+                        execute()
+                    }.onFailure {
+                        Log.e(TAG, "Failed to call server api!")
+                        contactsLoading = false
+                    }.onSuccess { response ->
+                        val code = response.code()
+                        val error = response.errorBody()?.string()
+                        if (error != null) {
+                            Log.d(TAG, "Failed to fetch contacts from server $code response with error $error")
+                        }
+                    }.mapCatching {
+                        it.body()
+                    }.mapCatching { response ->
+                        val contactsResponse = response?.results ?: emptyList()
                         if (contactsResponse.isEmpty()) {
                             contactsLoading = false
                         } else {
                             allContacts.addAll(contactsResponse)
                             page++
                         }
-                    } else {
-                        Log.e(TAG, "Failed to fetch contacts from server!")
+                    }.onSuccess {
+                        Log.d(TAG, "Contacts retrieved successfully: $it")
+                    }.onFailure {
+                        Log.d(TAG, "Failed fetch contacts from server!")
                         contactsLoading = false
                     }
-                } catch (e: Exception) {
-                    Log.e(TAG, "Failed to call server api!", e.cause)
-                    contactsLoading = false
                 }
-            }
-            if (allContacts.isEmpty()) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    val contactData = contactDao.getAllContacts().map {
-                        Contact.fromJson(it.data)
-                    }
-                    contacts.postValue(formatContactList(contactData))
-                }
-            } else {
                 contacts.postValue(formatContactList(allContacts))
-                CoroutineScope(Dispatchers.IO).launch {
+                CoroutineScope(dispatcher).launch {
                     contactDao.deleteAll()
                     allContacts.forEach {
                         contactDao.insertContact(ContactData(data = it.toJson()))
                     }
                 }
             }
+        }
+    }
+
+    suspend fun getBitmapFromURL(src: String?): Bitmap? {
+        return withContext(dispatcher) {
+            runCatching {
+                val connection = URL(src).openConnection() as HttpURLConnection
+                connection.doInput = true
+                connection.connect()
+                val input = connection.inputStream
+                BitmapFactory.decodeStream(input)
+            }.onFailure { error ->
+                Log.e(TAG, "Error downloading image", error)
+            }.onSuccess {
+                Log.e(TAG, "Bitmap returned  with ${it.byteCount} bytes")
+            }.getOrNull()
         }
     }
 

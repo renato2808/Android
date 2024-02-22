@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
             this.applicationContext as ContactApp
         )
     }
+    private var lastContactsPage = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,13 +34,18 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.contacts.observe(this) { contacts ->
             if (contacts != null) {
+                lastContactsPage = (contacts.size / 10) + 1
                 adapter.setContacts(contacts)
             } else {
+                lastContactsPage = 1
                 showErrorToast()
             }
         }
 
-        viewModel.fetchContacts()
+        viewModel.fetchContacts(lastContactsPage)
+        binding.loadButton.setOnClickListener {
+            viewModel.fetchContacts(lastContactsPage)
+        }
     }
 
     private fun setupRecyclerView() {

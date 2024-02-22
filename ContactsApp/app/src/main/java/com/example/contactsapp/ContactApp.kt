@@ -11,5 +11,5 @@ class ContactApp: Application() {
     // Using by lazy so the database and the repository are only created when they're needed
     // rather than when the application starts
     private val contactDatabase by lazy { ContactDatabase.getDatabase(this) }
-    val contactRepository by lazy { ContactRepository(contactDatabase.getContactDao(), this) }
+    val contactRepository by lazy { ContactRepository(contactDatabase.getContactDao()) }
 }

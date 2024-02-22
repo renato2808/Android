@@ -1,6 +1,7 @@
 package com.example.contactsapp.viewmodel
 
 import android.app.Application
+import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -11,8 +12,12 @@ import java.lang.IllegalArgumentException
 class ContactViewModel (private val contactRepository: ContactRepository, app: Application) : ViewModel() {
     val contacts = contactRepository.contactsLiveData
 
-    fun fetchContacts() = viewModelScope.launch {
-        contactRepository.fetchContacts()
+    fun fetchContacts(maxPage: Int) = viewModelScope.launch {
+        contactRepository.fetchContacts(maxPage)
+    }
+
+    suspend fun getBitmapFromURL(url: String?): Bitmap? {
+        return contactRepository.getBitmapFromURL(url)
     }
 }
 
