@@ -46,6 +46,22 @@
         android:layout_marginTop="8dp"
         tools:text="Phone: 123-456-7890" />
 
+    <TextView
+        android:id="@+id/textViewLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginTop="8dp"
+        tools:text="Login data: [username=," />
+
+    <TextView
+        android:id="@+id/textViewRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginTop="8dp"
+        tools:text="Login data: [username=," />
+
     <!-- Add more TextViews to display other contact attributes as needed -->
 
 </LinearLayout>

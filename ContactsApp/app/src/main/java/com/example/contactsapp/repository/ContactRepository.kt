@@ -1,5 +1,6 @@
 package com.example.contactsapp.repository
 
+import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.contactsapp.api.ContactListApi
@@ -8,16 +9,14 @@ import com.example.contactsapp.model.Contact
 import com.example.contactsapp.model.ContactData
 import com.example.contactsapp.model.ContactListResponse
 import com.example.contactsapp.model.Location
+import com.example.contactsapp.model.Login
 import com.example.contactsapp.model.Name
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class ContactRepository(private val contactDao: ContactDao) {
+class ContactRepository(private val contactDao: ContactDao, val app: Application) {
 
     companion object {
         private const val TAG = "ContactRepository"
@@ -27,46 +26,52 @@ class ContactRepository(private val contactDao: ContactDao) {
     val contactsLiveData: MutableLiveData<List<Contact>?> = contacts
     private val contactListApi = RetrofitClient.retrofit.create(ContactListApi::class.java)
 
-    suspend fun fetchContacts() {
+    suspend fun fetchContacts(maxPage: Int = 1) {
+        var page = 1
+        var contactsLoading = true
+        val allContacts: MutableList<Contact> = mutableListOf()
         withContext(Dispatchers.IO) {
-            val call = contactListApi.getContacts("lydia", 100, 1)
-            call.enqueue(object : Callback<ContactListResponse> {
-                override fun onResponse(call: Call<ContactListResponse>, response: Response<ContactListResponse>) {
+            while (contactsLoading && page <= maxPage) {
+                try {
+                    val response = contactListApi.getContacts("lydia", 10, page).execute()
+
                     if (response.isSuccessful) {
                         val contactsResponse = response.body()?.results ?: emptyList()
-                        contacts.postValue(formatContactList(contactsResponse))
-
-                        CoroutineScope(Dispatchers.IO).launch {
-                            contactDao.deleteAll()
-                            contactsResponse.forEach {
-                                contactDao.insertContact(ContactData(data = it.toJson()))
-                            }
+                        if (contactsResponse.isEmpty()) {
+                            contactsLoading = false
+                        } else {
+                            allContacts.addAll(contactsResponse)
+                            page++
                         }
                     } else {
                         Log.e(TAG, "Failed to fetch contacts from server!")
-                        CoroutineScope(Dispatchers.IO).launch {
-                            val contactData = contactDao.getAllContacts().map {
-                                Contact.fromJson(it.data)
-                            }
-                            contacts.postValue(formatContactList(contactData))
-                        }
+                        contactsLoading = false
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "Failed to call server api!", e.cause)
+                    contactsLoading = false
+                }
+            }
+            if (allContacts.isEmpty()) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    val contactData = contactDao.getAllContacts().map {
+                        Contact.fromJson(it.data)
+                    }
+                    contacts.postValue(formatContactList(contactData))
+                }
+            } else {
+                contacts.postValue(formatContactList(allContacts))
+                CoroutineScope(Dispatchers.IO).launch {
+                    contactDao.deleteAll()
+                    allContacts.forEach {
+                        contactDao.insertContact(ContactData(data = it.toJson()))
                     }
                 }
-
-                override fun onFailure(call: Call<ContactListResponse>, t: Throwable) {
-                    Log.e(TAG, "Failed to call server api!")
-                    CoroutineScope(Dispatchers.IO).launch {
-                        val contactData = contactDao.getAllContacts().map {
-                            Contact.fromJson(it.data)
-                        }
-                        contacts.postValue(formatContactList(contactData))
-                    }
-                }
-            })
+            }
         }
     }
 
-    fun formatContactList(contactList: List<Contact>): List<Contact> {
+    private fun formatContactList(contactList: List<Contact>): List<Contact> {
         val formattedContactList = mutableListOf<Contact>()
 
         contactList.forEach { contact ->
@@ -88,7 +93,14 @@ class ContactRepository(private val contactDao: ContactDao) {
                     postcode = contact.location.postcode
                 ),
                 email = contact.email,
-                login = contact.login,
+                login = Login(
+                    username = contact.login.username,
+                    password = contact.login.password,
+                    salt = contact.login.salt,
+                    md5 = contact.login.md5,
+                    sha1 = contact.login.sha1,
+                    sha256 = contact.login.sha256
+                ),
                 registered = contact.registered,
                 dob = contact.dob,
                 phone = contact.phone,

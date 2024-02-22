@@ -1,8 +1,10 @@
 package com.example.contactsapp.view
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.format.DateUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.example.contactsapp.R
 import com.example.contactsapp.databinding.ActivityContactDetailsBinding
@@ -22,10 +24,10 @@ class ContactDetailsActivity : AppCompatActivity() {
         val contact = intent.serializable("CONTACT_DETAILS") as? Contact
 
         // Display contact details
-        contact?.let { displayContactDetails(it) }
+        contact?.let { displayContactDetails(this, it) }
     }
 
-    private fun displayContactDetails(contact: Contact) {
+    private fun displayContactDetails(context: Context, contact: Contact) {
         // Set contact details in UI
         binding.apply {
             textViewName.text =
@@ -39,9 +41,27 @@ class ContactDetailsActivity : AppCompatActivity() {
                     contact.location.street,
                     contact.location.city,
                     contact.location.state,
-                    contact.location.postcode.toString()
+                    contact.location.postcode
                 )
-
+            textViewLogin.text = getString(
+                R.string.login_data,
+                contact.login.username,
+                contact.login.password,
+                contact.login.salt,
+                contact.login.md5,
+                contact.login.sha1,
+                contact.login.sha256
+            )
+            val timestampInMillis = contact.registered * 1000
+            textViewRegister.text =
+                getString(
+                    R.string.register_date,
+                    DateUtils.formatDateTime(
+                        context,
+                        timestampInMillis,
+                        DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_TIME
+                    )
+                )
         }
     }
 

@@ -6,5 +6,5 @@ data class Location(
     val street: String,
     val city: String,
     val state: String,
-    val postcode: Int
+    val postcode: String
 ): Serializable
