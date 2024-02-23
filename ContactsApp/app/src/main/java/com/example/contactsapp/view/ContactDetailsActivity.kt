@@ -64,17 +64,24 @@ class ContactDetailsActivity : AppCompatActivity() {
                 contact.login.sha1,
                 contact.login.sha256
             )
-            val timestampInMillis = contact.registered * 1000
+            val rdTimestampInMillis = contact.registered * 1000
             textViewRegister.text =
                 getString(
                     R.string.register_date,
                     DateUtils.formatDateTime(
                         context,
-                        timestampInMillis,
+                        rdTimestampInMillis,
                         DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_TIME
                     )
                 )
-            textViewDob.text = getString(R.string.contact_dob, contact.dob.toString())
+            val dobTimestampInMillis = contact.dob * 1000
+            textViewDob.text = getString(
+                R.string.contact_dob, DateUtils.formatDateTime(
+                    context,
+                    dobTimestampInMillis,
+                    DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_TIME
+                )
+            )
             textViewCell.text = getString(R.string.contact_cell, contact.cell)
             textViewId.text = getString(R.string.id_name_value, contact.id.name, contact.id.value)
             textViewNat.text = getString(R.string.contact_nat, contact.nat)

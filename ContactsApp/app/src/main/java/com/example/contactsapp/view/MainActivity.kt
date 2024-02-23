@@ -66,7 +66,6 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-
     private fun showErrorToast() {
         Toast.makeText(this, "Failed to get contacts!", Toast.LENGTH_SHORT).show()
     }

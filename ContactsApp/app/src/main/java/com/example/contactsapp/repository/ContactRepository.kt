@@ -12,9 +12,7 @@ import com.example.contactsapp.model.Location
 import com.example.contactsapp.model.Login
 import com.example.contactsapp.model.Name
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.HttpURLConnection
 import java.net.URL
@@ -23,7 +21,6 @@ class ContactRepository(
     private val contactDao: ContactDao,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
-
     companion object {
         private const val TAG = "ContactRepository"
         private const val PAGE_SIZE = 10
@@ -80,11 +77,11 @@ class ContactRepository(
                     }
                 }
                 contacts.postValue(formatContactList(allContacts))
-                CoroutineScope(dispatcher).launch {
-                    contactDao.deleteAll()
-                    allContacts.forEach {
-                        contactDao.insertContact(ContactData(data = it.toJson()))
-                    }
+
+                // Updating database
+                contactDao.deleteAll()
+                allContacts.forEach {
+                    contactDao.insertContact(ContactData(data = it.toJson()))
                 }
             }
         }

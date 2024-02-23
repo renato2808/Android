@@ -8,7 +8,7 @@
     <string name="login_data">Login Data: [username=%1$s, password=%2$s, salt=%3$s, md5=%4$s, sha1=%5$s, sha256=%6$s]</string>
     <string name="register_date">Register Date: %1$s</string>
     <string name="load_more_contacts">Load More Contacts</string>
-    <string name="contact_dob">Dob: %1$s</string>
+    <string name="contact_dob">Date of birth: %1$s</string>
     <string name="contact_cell">Cell: %1$s</string>
     <string name="id_name_value">ID: name=%1$s value=%2$s</string>
     <string name="contact_nat">Nat: %1$s</string>
