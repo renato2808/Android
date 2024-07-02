@@ -10,7 +10,7 @@ import androidx.datastore.preferences.core.*
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.beesapp.LOG_TAG
-import com.example.beesapp.WEB_SERVICE_URL
+import com.example.beesapp.api.BreweryService
 import com.example.beesapp.model.Brewery
 import com.example.beesapp.model.BreweryRating
 import com.example.beesapp.model.BreweryRatingDAO
@@ -25,9 +25,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.IOException
 
 class BreweryRepository(private val breweryRatingDAO: BreweryRatingDAO, val app: Application, private val lastState: DataStore<Preferences>) {
@@ -36,6 +33,7 @@ class BreweryRepository(private val breweryRatingDAO: BreweryRatingDAO, val app:
         val STATE = stringPreferencesKey("state")
     }
 
+    private val apiClient = RetrofitClient.retrofit.create(BreweryService::class.java)
     private val mutableBreweryData = MutableLiveData<List<Brewery>>()
     val breweryData: LiveData<List<Brewery>> = mutableBreweryData
     private val mutableBreweryRatingData = MutableLiveData<List<BreweryRating>>()
@@ -60,12 +58,7 @@ class BreweryRepository(private val breweryRatingDAO: BreweryRatingDAO, val app:
     @WorkerThread
     fun getBreweries() {
         if (networkAvailable()) {
-            val retrofit = Retrofit.Builder()
-                .baseUrl(WEB_SERVICE_URL)
-                .addConverterFactory(MoshiConverterFactory.create())
-                .build()
-            val service = retrofit.create(BreweryService::class.java)
-            val serviceData = service.getBreweryData().body() ?: emptyList()
+            val serviceData = apiClient.getBreweryData().body() ?: emptyList()
             for (brewery in serviceData) {
                 Log.i(LOG_TAG, brewery.name)
             }
@@ -76,15 +69,9 @@ class BreweryRepository(private val breweryRatingDAO: BreweryRatingDAO, val app:
     @WorkerThread
     fun getBreweriesByState(state: String) {
         if (networkAvailable()) {
-            val retrofit = Retrofit.Builder()
-                .baseUrl(WEB_SERVICE_URL)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(MoshiConverterFactory.create())
-                .build()
-            val service = retrofit.create(BreweryService::class.java)
             compositeDisposable.clear()
             compositeDisposable.add(
-                service.getBreweryDataByState(state).observeOn(AndroidSchedulers.mainThread())
+                apiClient.getBreweryDataByState(state).observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
                     .subscribe({ response ->
                         CoroutineScope(SupervisorJob()).launch {

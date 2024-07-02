@@ -2,6 +2,7 @@ package avancado
 
 import funcoes.min
 import java.util.*
+import kotlin.math.abs
 
 
 data class Ponto(val x: Int, val y: Int) {
@@ -32,25 +33,25 @@ fun shapeArea(n: Int): Int {
     return ((2 * n - 1) * (2 * n - 1) - 4 * ((n - 1) * (n - 1) - (n - 2) * (n - 1) / 2))
 }
 
-fun almostIncreasingSeq(sequence: MutableList<Int>): Boolean {
-    var res = true
-    val auxSeq = mutableListOf<Int>()
-    val auxSeq2 = mutableListOf<Int>()
-    sequence.forEach { auxSeq.add(it) }
-    sequence.forEach { auxSeq2.add(it) }
-
-    for (i in 0 until sequence.size - 1) {
-        if (auxSeq[i] >= auxSeq[i + 1]) {
-            auxSeq.removeAt(i + 1)
-            res = checkSequence(auxSeq)
-            auxSeq2.removeAt(i)
-            res = (res || checkSequence(auxSeq2))
-            break
-        }
-    }
-
-    return res
-}
+//fun almostIncreasingSeq(sequence: MutableList<Int>): Boolean {
+//    var res = true
+//    val auxSeq = mutableListOf<Int>()
+//    val auxSeq2 = mutableListOf<Int>()
+//    sequence.forEach { auxSeq.add(it) }
+//    sequence.forEach { auxSeq2.add(it) }
+//
+//    for (i in 0 until sequence.size - 1) {
+//        if (auxSeq[i] >= auxSeq[i + 1]) {
+//            auxSeq.removeAt(i + 1)
+//            res = checkSequence(auxSeq)
+//            auxSeq2.removeAt(i)
+//            res = (res || checkSequence(auxSeq2))
+//            break
+//        }
+//    }
+//
+//    return res
+//}
 
 fun hauntedHotel(matrix: MutableList<MutableList<Int>>): Int {
     var total = 0
@@ -90,16 +91,32 @@ fun longestString(inputArray: MutableList<String>): MutableList<String> {
     return res
 }
 
+fun lengthOfLongestSubstring(s: String): Int {
+    // length of longest substring of s without repeating chars
+    var max = 0
+    var aux = 0
+    var longestStr = mutableListOf<Char>()
 
-fun checkSequence(sequence: MutableList<Int>): Boolean {
-    var res = true
-    for (i in 0 until sequence.size - 1) {
-        if (sequence[i] >= sequence[i + 1]) {
-            res = false
-            break
+    for (letter in s) {
+        if (!longestStr.contains(letter)) {
+            aux++
+            longestStr.add(letter)
+        } else {
+            if (aux > max) {
+                max = aux
+            }
+            var i = 0
+            while (longestStr[i] != letter) {
+                i++
+            }
+            val aux2 = longestStr.slice(i + 1 until longestStr.size).toMutableList()
+            longestStr = aux2
+            longestStr.add(letter)
+            aux = longestStr.size
         }
     }
-    return res
+
+    return if (max > longestStr.size) max else longestStr.size
 }
 
 
@@ -176,20 +193,6 @@ fun isValidCrypt(crypt: MutableList<String>, solution: MutableList<MutableList<C
     }
 
     return res[0] + res[1] == res[2]
-}
-
-fun solution(grid: Array<CharArray>): Boolean {
-    for (i in 0..8) {
-        val row = CharArray(9)
-        val square = CharArray(9)
-        val column = grid[i].clone()
-        for (j in 0..8) {
-            row[j] = grid[j][i]
-            square[j] = grid[i / 3 * 3 + j / 3][i * 3 % 9 + j % 3]
-        }
-        if (!(validate(column) && validate(row) && validate(square))) return false
-    }
-    return true
 }
 
 private fun validate(check: CharArray): Boolean {
@@ -397,23 +400,98 @@ fun isIPV4(inputString: String): Boolean {
     return res
 }
 
+class MedianFinder() {
+
+    private val numList = mutableListOf<Int>()
+
+    fun addNum(num: Int) {
+        if (numList.isNotEmpty()) {
+            var aux = 0
+            var i = 0
+            val listSize = numList.size
+
+            while (i < listSize) {
+                if (abs(num) < abs(numList[i])) {
+                    aux = numList[i]
+                    numList[i] = num
+                    break
+                }
+                i++
+            }
+
+            if (i in 1..<listSize) {
+                numList.add(numList[listSize - 1])
+                for (j in i + 2 until  listSize) {
+                    numList[j] = numList[j - 1]
+                }
+                numList[i + 1] = aux
+            } else if (i == listSize) {
+                numList.add(num)
+            }
+        }
+        else {
+            numList.add(num)
+        }
+        println(numList)
+    }
+
+    fun findMedian(): Double {
+        if (numList.isNotEmpty()) {
+            val lenght = numList.size
+            val middle = lenght / 2
+
+            return if (lenght % 2 == 0) {
+                (numList[middle - 1].toDouble() + numList[middle].toDouble()) / 2
+            } else {
+                numList[middle].toDouble()
+            }
+        } else return 0.0
+    }
+}
+
 fun main(args: Array<String>) {
-    println(palindrome("abba"))
-    val input = mutableListOf(
-        "young",
-        "yooooooung",
-        "hot",
-        "or",
-        "not",
-        "come",
-        "on",
-        "fire",
-        "water",
-        "watermelon"
-    )
-    println(longestString(input))
-    println(commonLetters(input[1], input[9]))
-    println(sortHeights(mutableListOf(-1, 150, 190, 170, -1, -1, 160, 180)))
-    println(firstDuplicate(mutableListOf(2, 1, 3, 5, 3, 2)))
-    println(topTerms(4, "dabbssaaabsllseeeeeiiiiiiiiiffff"))
+//    println(palindrome("abba"))
+//    val input = mutableListOf(
+//        "young",
+//        "yooooooung",
+//        "hot",
+//        "or",
+//        "not",
+//        "come",
+//        "on",
+//        "fire",
+//        "water",
+//        "watermelon"
+//    )
+//    println(longestString(input))
+//    println(commonLetters(input[1], input[9]))
+//    println(sortHeights(mutableListOf(-1, 150, 190, 170, -1, -1, 160, 180)))
+//    println(firstDuplicate(mutableListOf(2, 1, 3, 5, 3, 2)))
+//    println(lengthOfLongestSubstring("dabbssaaabsllseeeeeiiiiiiiiiffff"))
+
+
+    /**
+     * Your MedianFinder object will be instantiated and called as such:
+     * var obj = MedianFinder()
+     * obj.addNum(num)
+     * var param_2 = obj.findMedian()
+     *
+     *
+     */
+    val obj = MedianFinder()
+    obj.addNum(6)
+    println(obj.findMedian())
+    obj.addNum(10)
+    println(obj.findMedian())
+    obj.addNum(2)
+    println(obj.findMedian())
+    obj.addNum(6)
+    println(obj.findMedian())
+    obj.addNum(5)
+    println(obj.findMedian())
+    obj.addNum(0)
+    println(obj.findMedian())
+    obj.addNum(6)
+
+    println(obj.findMedian())
 }

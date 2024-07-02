@@ -24,8 +24,7 @@ class ContactDetailsActivity : AppCompatActivity() {
     }
     private val viewModel: ContactViewModel by viewModels {
         ContactViewModelFactory(
-            (this.applicationContext as ContactApp).contactRepository,
-            this.applicationContext as ContactApp
+            (this.applicationContext as? ContactApp)?.contactRepository
         )
     }
 

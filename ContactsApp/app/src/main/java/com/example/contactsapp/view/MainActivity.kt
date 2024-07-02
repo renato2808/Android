@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: ContactViewModel by viewModels {
         ContactViewModelFactory(
             (this.applicationContext as ContactApp).contactRepository,
-            this.applicationContext as ContactApp
         )
     }
     private var lastContactsPage = 1
@@ -32,11 +31,12 @@ class MainActivity : AppCompatActivity() {
 
         setupRecyclerView()
 
-        viewModel.contacts.observe(this) { contacts ->
+        viewModel.contacts?.observe(this) { contacts ->
             if (contacts != null) {
                 lastContactsPage = (contacts.size / 10) + 1
                 adapter.setContacts(contacts)
             } else {
+                adapter.clearContacts()
                 lastContactsPage = 1
                 showErrorToast()
             }

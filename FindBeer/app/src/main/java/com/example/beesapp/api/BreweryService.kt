@@ -1,4 +1,4 @@
-package com.example.beesapp.data
+package com.example.beesapp.api
 
 import com.example.beesapp.model.Brewery
 import io.reactivex.Observable

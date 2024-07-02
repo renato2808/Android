@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.contactsapp.api.ContactListApi
 import com.example.contactsapp.data.ContactDao
 import com.example.contactsapp.model.Contact
-import com.example.contactsapp.model.ContactData
+import com.example.contactsapp.data.ContactData
 import com.example.contactsapp.model.Location
 import com.example.contactsapp.model.Login
 import com.example.contactsapp.model.Name
@@ -32,11 +32,11 @@ class ContactRepository(
 
     suspend fun fetchContacts(maxPage: Int) {
         var contactsLoading = true
-        var allContacts: MutableList<Contact>
+        //var allContacts: MutableList<Contact>
 
         withContext(dispatcher) {
             //Getting contacts from database
-            allContacts = contactDao.getAllContacts().map {
+            val allContacts = contactDao.getAllContacts().map {
                 Contact.fromJson(it.data)
             }.toMutableList()
             val lastPageLoaded = allContacts.size / PAGE_SIZE
@@ -72,7 +72,7 @@ class ContactRepository(
                     }.onSuccess {
                         Log.d(TAG, "Contacts retrieved successfully: $it")
                     }.onFailure {
-                        Log.d(TAG, "Failed fetch contacts from server!")
+                        Log.d(TAG, "Failed fetch contacts from server: ${it.printStackTrace()}")
                         contactsLoading = false
                     }
                 }

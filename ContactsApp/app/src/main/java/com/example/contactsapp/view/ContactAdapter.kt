@@ -32,6 +32,11 @@ class ContactAdapter(private val context: Context) : RecyclerView.Adapter<Contac
         notifyDataSetChanged()
     }
 
+    fun clearContacts() {
+        this.contacts = emptyList()
+        notifyDataSetChanged()
+    }
+
     fun setOnClickListener(onContactSelected: OnContactSelected) {
         this.onContactSelected = onContactSelected
     }
