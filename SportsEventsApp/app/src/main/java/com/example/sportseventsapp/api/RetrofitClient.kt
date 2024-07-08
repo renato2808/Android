@@ -21,23 +21,7 @@ object RetrofitClient {
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
         val client = OkHttpClient.Builder()
-            .addInterceptor { chain ->
-                val response = chain.proceed(chain.request())
-                val responseBody = response.body
-                if (responseBody != null) {
-                    var charset = Charset.forName("UTF-8") // Adjust charset as per your response
-                    val contentType = responseBody.contentType()
-                    if (contentType != null) {
-                        charset = contentType.charset(charset)
-                    }
-                    val bodyString = responseBody.string() // Convert response body to string
-                    // Rebuild the response before passing it to Retrofit
-                    return@addInterceptor response.newBuilder()
-                        .body(bodyString.toByteArray(charset).toResponseBody(contentType))
-                        .build()
-                }
-                response
-            }
+            .addInterceptor(loggingInterceptor)
             .build()
 
         Retrofit.Builder()

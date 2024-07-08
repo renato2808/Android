@@ -4,7 +4,8 @@ import android.app.Application
 import android.util.Log
 import com.example.sportseventsapp.api.RetrofitClient
 import com.example.sportseventsapp.api.SportsApiService
-import com.example.sportseventsapp.data.FavoriteEventsDatabase
+import com.example.sportseventsapp.data.SportData
+import com.example.sportseventsapp.data.SportsEventsDatabase
 import com.example.sportseventsapp.model.FavoriteEvent
 import com.example.sportseventsapp.model.Sport
 import kotlinx.coroutines.CoroutineDispatcher
@@ -15,7 +16,7 @@ import kotlinx.coroutines.withContext
 
 class SportsEventsRepository(
     private val app: Application,
-    private val database: FavoriteEventsDatabase,
+    private val database: SportsEventsDatabase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
@@ -35,24 +36,27 @@ class SportsEventsRepository(
             apiService.getSports().runCatching {
                 execute()
             }.onFailure {
-                Log.e(TAG, "Failed to call server api!")
+                Log.e(TAG, "Failed to call server api! Fetching from database...")
+                val sports = database.sportsDao().getAllSports()
+                _sportsEvents.value = sports.map { Sport.fromJson(it.data) }
             }.onSuccess { response ->
                 val code = response.code()
                 val error = response.errorBody()?.string()
                 if (error != null) {
                     Log.d(TAG, "Fetch sports events $code response with error $error")
+                    val sports = database.sportsDao().getAllSports()
+                    _sportsEvents.value = sports.map { Sport.fromJson(it.data) }
                 } else {
                     Log.d(TAG, "Fetch sports events $code response.")
+                    val sports = response.body() ?: emptyList()
+                    _sportsEvents.value = sports
+
+                    // Save the fetched events to the database
+                    database.sportsDao().deleteAll()
+                    sports.forEach { sport ->
+                        database.sportsDao().insertSport(SportData(data = sport.toJson()))
+                    }
                 }
-            }.mapCatching {
-                it.body()
-            }.mapCatching { response ->
-                val sportsEvents = response ?: emptyList()
-                _sportsEvents.value = sportsEvents
-            }.onSuccess {
-                Log.d(TAG, "Sports events retrieved successfully: $it")
-            }.onFailure {
-                Log.d(TAG, "Failed fetch sports events from server: ${it.printStackTrace()}")
             }
         }
     }
