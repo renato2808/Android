@@ -21,16 +21,16 @@ This Android app, built using Jetpack Compose, displays sports events and allows
 ## Project Structure
 The project is structured as follows:
 app/
-|-- api/
-|-- data/
-|-- model/ # Data models
-|-- repository/ # Repository for managing data
-|-- ui/
-    |-- SportsApp.kt # Main UI class
-|-- viewmodel/ # ViewModels for UI logic
-|-- util/ # Utility classes
-|-- res/
-|-- AndroidManifest.xml
+|-- api/  
+|-- data/  
+|-- model/            # Data models  
+|-- repository/        # Repository for managing data  
+|-- ui/  
+    |-- SportsApp.kt   # Main UI class  
+|-- viewmodel/         # ViewModels for UI logic  
+|-- util/              # Utility classes  
+|-- res/  
+|-- AndroidManifest.xml  
 
 ## Getting Started
 1. **Clone the repository:**
