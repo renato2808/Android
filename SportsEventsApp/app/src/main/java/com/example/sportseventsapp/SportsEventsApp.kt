@@ -8,5 +8,4 @@ class SportsEventsApp : Application() {
 
     private val database by lazy { SportsEventsDatabase.getDatabase(this) }
     val repository by lazy { SportsEventsRepository( this, database) }
-
 }

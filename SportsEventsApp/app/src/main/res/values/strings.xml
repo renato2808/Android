@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">SportsEventsApp</string>
+    <string name="no_events_available">No events available</string>
+    <string name="show_favorites">Show Favorites</string>
+    <string name="favorite">Favorite</string>
+    <string name="collapse">Collapse</string>
+    <string name="expand">Expand</string>
+    <string name="vs">VS</string>
+    <string name="starts_at">Starts %1$s</string>
+    <string name="unknown">Unknown</string>
 </resources>

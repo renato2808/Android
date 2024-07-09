@@ -15,10 +15,20 @@ class SportsEventsViewModel(private val repository: SportsEventsRepository?) : V
 
     val sportsEvents: StateFlow<List<Sport>> = repository?.sportsEvents ?: MutableStateFlow(emptyList())
     val favoriteEvents: StateFlow<List<FavoriteEvent>> = repository?.favoriteEvents ?: MutableStateFlow(emptyList())
+    private val _loading = MutableStateFlow(false)
+    val loading: StateFlow<Boolean> get() = _loading
+
+    init {
+        viewModelScope.launch {
+            _loading.value = true
+        }
+    }
 
     fun initializeSportsEvents() = viewModelScope.launch {
+        _loading.value = true
         repository?.refreshSportsEvents()
         repository?.refreshFavoriteEvents()
+        _loading.value = false
     }
 
     fun addFavorite(sportEvent: SportEvent) {
