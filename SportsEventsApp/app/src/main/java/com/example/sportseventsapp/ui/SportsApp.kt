@@ -1,12 +1,15 @@
 package com.example.sportseventsapp.ui
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,11 +19,14 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -30,7 +36,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,6 +57,7 @@ import java.util.Locale
 fun SportsApp(viewModel: SportsEventsViewModel, context: Context) {
     val sportsEvents by viewModel.sportsEvents.collectAsState(initial = emptyList())
     val favoriteEvents by viewModel.favoriteEvents.collectAsState(initial = emptyList())
+    val isLoading by viewModel.loading.collectAsState(initial = false)
 
     LaunchedEffect(Unit) {
         viewModel.initializeSportsEvents()
@@ -69,18 +75,27 @@ fun SportsApp(viewModel: SportsEventsViewModel, context: Context) {
             TopAppBar(title = { Text(appName) })
         }
     ) {
-        LazyColumn(modifier = Modifier.padding(it)) {
-            items(sportsEvents) { sport ->
-                val isExpandedState = rememberSaveable { mutableStateOf(false) }
-                val showFavoritesFirstState = rememberSaveable { mutableStateOf(false) }
-
-                SportItem(
-                    sport,
-                    favoriteEvents,
-                    viewModel,
-                    isExpandedState,
-                    showFavoritesFirstState
-                )
+        Box(modifier = Modifier.fillMaxSize()) {
+            when {
+                isLoading -> {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
+                sportsEvents.isEmpty() -> {
+                    Text(
+                        text = "No events available",
+                        modifier = Modifier.align(Alignment.Center),
+                        style = MaterialTheme.typography.headlineSmall.copy(color = Color.Gray)
+                    )
+                }
+                else -> {
+                    LazyColumn(modifier = Modifier.padding(it)) {
+                        items(sportsEvents) { sport ->
+                            val isExpandedState = remember { mutableStateOf(false) }
+                            val showFavoritesState = remember { mutableStateOf(false) }
+                            SportItem(sport, favoriteEvents, viewModel, isExpandedState, showFavoritesState)
+                        }
+                    }
+                }
             }
         }
     }
@@ -92,10 +107,10 @@ fun SportItem(
     favoriteEvents: List<FavoriteEvent>,
     viewModel: SportsEventsViewModel,
     isExpandedState: MutableState<Boolean>,
-    showFavoritesFirstState: MutableState<Boolean>
+    showFavoritesState: MutableState<Boolean>
 ) {
     val isExpanded by isExpandedState
-    val showFavoritesFirst by showFavoritesFirstState
+    val showFavorites by showFavoritesState
     val favoriteEventIds = favoriteEvents.map { it.id }
 
     val upcomingEvents = sport.sportEvents.filter { event ->
@@ -105,9 +120,12 @@ fun SportItem(
     }.sortedBy { event ->
         event.startTime
     }
-    val sortedSportEvents = upcomingEvents.sortedByDescending { event ->
-        if (favoriteEventIds.contains(event.id)) 1 else 0
+
+    val favoriteUpcomingEvents = upcomingEvents.filter { event ->
+        favoriteEventIds.contains(event.id)
     }
+
+    val eventsToDisplay = if (showFavorites) favoriteUpcomingEvents else upcomingEvents
 
     Column(modifier = Modifier.padding(vertical = 8.dp)) {
         Row(
@@ -123,15 +141,21 @@ fun SportItem(
                 modifier = Modifier.weight(1f)
             )
             Spacer(modifier = Modifier.weight(1f))
-            IconButton(onClick = {
-                showFavoritesFirstState.value = !showFavoritesFirst
-            }) {
-                Icon(
-                    imageVector = Icons.Outlined.Star,
-                    contentDescription = "Toggle Favorites First",
-                    tint = if (showFavoritesFirst) Color.Yellow else Color.Black
+            Text(
+                text = "Show Favorites",
+                style = MaterialTheme.typography.bodyMedium.copy(color = Color.White),
+                modifier = Modifier.align(Alignment.CenterVertically)
+            )
+            Switch(
+                checked = showFavorites,
+                onCheckedChange = { showFavoritesState.value = it },
+                colors = SwitchDefaults.colors(
+                    checkedThumbColor = Color.Yellow,
+                    uncheckedThumbColor = Color.Black,
+                    checkedTrackColor = Color.Yellow.copy(alpha = 0.5f),
+                    uncheckedTrackColor = Color.Black.copy(alpha = 0.5f)
                 )
-            }
+            )
             IconButton(
                 onClick = { isExpandedState.value = !isExpanded },
                 modifier = Modifier.padding(start = 8.dp)
@@ -145,8 +169,6 @@ fun SportItem(
         }
 
         if (isExpanded) {
-            val eventsToDisplay = if (showFavoritesFirst) sortedSportEvents else upcomingEvents
-
             Column(modifier = Modifier.background(Color.DarkGray).padding(8.dp)) {
                 eventsToDisplay.forEach { event ->
                     EventItem(event, favoriteEventIds.contains(event.id), viewModel)
