@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.withContext
 
-class SportsEventsRepository(
+class SportsRepository(
     private val app: Application,
     private val database: SportsEventsDatabase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
@@ -25,8 +25,8 @@ class SportsEventsRepository(
     }
 
     private val apiService: SportsApiService = RetrofitClient.instance.create(SportsApiService::class.java)
-    private val _sportsEvents = MutableStateFlow<List<Sport>>(emptyList())
-    val sportsEvents: StateFlow<List<Sport>> get() = _sportsEvents
+    private val _sports = MutableStateFlow<List<Sport>>(emptyList())
+    val sports: StateFlow<List<Sport>> get() = _sports
 
     private val _favoriteEvents = MutableStateFlow<List<FavoriteEvent>>(emptyList())
     val favoriteEvents: StateFlow<List<FavoriteEvent>> get() = _favoriteEvents
@@ -38,18 +38,18 @@ class SportsEventsRepository(
             }.onFailure {
                 Log.e(TAG, "Failed to call server api! Fetching from database...")
                 val sports = database.sportsDao().getAllSports()
-                _sportsEvents.value = sports.map { Sport.fromJson(it.data) }
+                _sports.value = sports.map { Sport.fromJson(it.data) }
             }.onSuccess { response ->
                 val code = response.code()
                 val error = response.errorBody()?.string()
                 if (error != null) {
                     Log.d(TAG, "Fetch sports events $code response with error $error")
                     val sports = database.sportsDao().getAllSports()
-                    _sportsEvents.value = sports.map { Sport.fromJson(it.data) }
+                    _sports.value = sports.map { Sport.fromJson(it.data) }
                 } else {
                     Log.d(TAG, "Fetch sports events $code response.")
                     val sports = response.body() ?: emptyList()
-                    _sportsEvents.value = sports
+                    _sports.value = sports
 
                     // Save the fetched events to the database
                     database.sportsDao().deleteAll()
@@ -58,12 +58,6 @@ class SportsEventsRepository(
                     }
                 }
             }
-        }
-    }
-
-    suspend fun getFavoriteEvents(): List<FavoriteEvent> {
-        return withContext(dispatcher) {
-            database.favoriteEventDao().getAll()
         }
     }
 

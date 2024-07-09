@@ -26,7 +26,7 @@ app/
 |-- model/            # Data models  
 |-- repository/        # Repository for managing data  
 |-- ui/  
-	|-- SportsApp.kt   # Main UI class  
+|-- ui/SportsApp.kt   # Main UI class  
 |-- viewmodel/         # ViewModels for UI logic  
 |-- util/              # Utility classes  
 |-- res/  

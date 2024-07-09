@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             SportsEventsAppTheme {
-                SportsApp(viewModel, this)
+                SportsApp(viewModel)
             }
         }
     }

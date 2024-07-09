@@ -1,6 +1,5 @@
 package com.example.sportseventsapp.ui
 
-import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -34,8 +33,8 @@ import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SportsApp(viewModel: SportsEventsViewModel, context: Context) {
-    val sportsEvents by viewModel.sportsEvents.collectAsState(initial = emptyList())
+fun SportsApp(viewModel: SportsEventsViewModel) {
+    val sports by viewModel.sports.collectAsState(initial = emptyList())
     val favoriteEvents by viewModel.favoriteEvents.collectAsState(initial = emptyList())
     val isLoading by viewModel.loading.collectAsState(initial = false)
 
@@ -57,7 +56,7 @@ fun SportsApp(viewModel: SportsEventsViewModel, context: Context) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
 
-                sportsEvents.isEmpty() -> {
+                sports.isEmpty() -> {
                     Text(
                         text = stringResource(R.string.no_events_available),
                         modifier = Modifier.align(Alignment.Center),
@@ -67,7 +66,7 @@ fun SportsApp(viewModel: SportsEventsViewModel, context: Context) {
 
                 else -> {
                     LazyColumn(modifier = Modifier.padding(it)) {
-                        items(sportsEvents) { sport ->
+                        items(sports) { sport ->
                             val isExpandedState = expandedStates.getOrPut(sport.id) { mutableStateOf(false) }
                             val showFavoritesState = favoriteSwitchStates.getOrPut(sport.id) { mutableStateOf(false) }
                             SportItem(sport, favoriteEvents, viewModel, isExpandedState, showFavoritesState)
@@ -134,9 +133,9 @@ fun SportItem(
                     checked = showFavorites,
                     onCheckedChange = { showFavoritesState.value = it },
                     colors = SwitchDefaults.colors(
-                        checkedThumbColor = Color.Yellow,
+                        checkedThumbColor = Color(0xFFFFD700), // Darker yellow color
                         uncheckedThumbColor = Color.Black,
-                        checkedTrackColor = Color.Yellow.copy(alpha = 0.5f),
+                        checkedTrackColor = Color(0xFFFFD700).copy(alpha = 0.5f),
                         uncheckedTrackColor = Color.Black.copy(alpha = 0.5f)
                     ),
                     thumbContent = {
@@ -145,7 +144,6 @@ fun SportItem(
                             contentDescription = null,
                             tint = Color.White,
                             modifier = Modifier.size(SwitchDefaults.IconSize).graphicsLayer {
-                                // Custom size and shape for the star icon inside the switch
                                 shape = CircleShape
                                 clip = true
                             }
@@ -165,7 +163,7 @@ fun SportItem(
             }
         }
 
-        if (isExpanded) {
+        if (isExpanded && eventsToDisplay.isNotEmpty()) {
             Column(modifier = Modifier
                 .background(Color.DarkGray)
                 .padding(8.dp)) {
@@ -221,7 +219,7 @@ fun EventItem(sportEvent: SportEvent, isFavorite: Boolean, viewModel: SportsEven
                     Icon(
                         imageVector = favoriteIcon,
                         contentDescription = stringResource(R.string.favorite),
-                        tint = if (isFavorite) Color.Yellow else Color.Black
+                        tint = if (isFavorite) Color(0xFFFFD700) else Color.Black
                     )
                 }
             }
