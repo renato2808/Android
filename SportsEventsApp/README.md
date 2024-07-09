@@ -19,14 +19,14 @@ This Android app, built using Jetpack Compose, displays sports events and allows
 - **MVVM Architecture:** Architecture pattern used for separating UI from business logic.
 
 ## Project Structure
-The project is structured as follows:
-app/
+The project is structured as follows:  
+app/  
 |-- api/  
 |-- data/  
 |-- model/            # Data models  
 |-- repository/        # Repository for managing data  
 |-- ui/  
-    |-- SportsApp.kt   # Main UI class  
+	|-- SportsApp.kt   # Main UI class  
 |-- viewmodel/         # ViewModels for UI logic  
 |-- util/              # Utility classes  
 |-- res/  
