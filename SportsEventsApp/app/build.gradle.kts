@@ -96,4 +96,7 @@ dependencies {
 
     // Coroutines for testing
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
+
+    // AndroidX Test - Core & JUnit rules
+    testImplementation("androidx.arch.core:core-testing:2.1.0")
 }

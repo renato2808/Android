@@ -7,7 +7,6 @@ import com.example.sportseventsapp.data.FavoriteEventDao
 import com.example.sportseventsapp.data.SportsDao
 import com.example.sportseventsapp.data.SportsEventsDatabase
 import com.example.sportseventsapp.model.FavoriteEvent
-import com.example.sportseventsapp.model.SportEvent
 import com.example.sportseventsapp.repository.SportsRepository
 import io.mockk.coEvery
 import io.mockk.every
@@ -104,6 +103,6 @@ class SportsRepositoryTest {
         repository.removeFavorite(favoriteEvent)
 
         assertEquals(0, repository.favoriteEvents.value.size)
-        assertEquals(emptyList<SportEvent>(), repository.favoriteEvents.value)
+        assertEquals(emptyList<FavoriteEvent>(), repository.favoriteEvents.value)
     }
 }

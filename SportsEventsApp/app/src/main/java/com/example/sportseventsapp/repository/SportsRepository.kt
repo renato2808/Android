@@ -27,7 +27,6 @@ class SportsRepository(
     private val apiService: SportsApiService = RetrofitClient.instance.create(SportsApiService::class.java)
     private val _sports = MutableStateFlow<List<Sport>>(emptyList())
     val sports: StateFlow<List<Sport>> get() = _sports
-
     private val _favoriteEvents = MutableStateFlow<List<FavoriteEvent>>(emptyList())
     val favoriteEvents: StateFlow<List<FavoriteEvent>> get() = _favoriteEvents
 
