@@ -2,11 +2,12 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("com.google.dagger.hilt.android") version "2.44" apply false
 }
 
 android {
     namespace = "com.example.sportseventsapp"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.sportseventsapp"
@@ -58,8 +59,17 @@ android {
     }
 }
 
-dependencies {
+kapt {
+    correctErrorTypes = true
+    javacOptions {
+        // These options are normally set automatically via the Hilt Gradle plugin, but we
+        // set them manually to workaround a bug in the Kotlin 1.5.20
+        option("-Adagger.fastInit=ENABLED")
+        option("-Adagger.hilt.android.internal.disableAndroidSuperclassValidation=true")
+    }
+}
 
+dependencies {
     implementation("androidx.core:core-ktx:1.8.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
     implementation("androidx.activity:activity-compose:1.6.1")
@@ -67,8 +77,14 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.0.0")
     implementation("androidx.compose.ui:ui-tooling-preview:1.3.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
+    implementation("com.google.dagger:hilt-android:2.44")
+    kapt("com.google.dagger:hilt-compiler:2.44")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
+
     implementation("androidx.room:room-runtime:2.4.3")
-    implementation("androidx.room:room-ktx:2.4.3") // Add this line for Room Kotlin extensions
+    implementation("androidx.room:room-ktx:2.4.3")
+    implementation("androidx.appcompat:appcompat:1.7.0") // Add this line for Room Kotlin extensions
     kapt("androidx.room:room-compiler:2.4.3")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
@@ -89,6 +105,8 @@ dependencies {
 
     // Jetpack Compose UI testing
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.0")
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.46.1")
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.46.1")
 
     // MockK for mocking
     testImplementation("io.mockk:mockk:1.12.0")
