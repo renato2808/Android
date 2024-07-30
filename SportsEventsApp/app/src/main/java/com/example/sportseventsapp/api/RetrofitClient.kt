@@ -3,11 +3,9 @@ package com.example.sportseventsapp.api
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
-import okhttp3.ResponseBody.Companion.toResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.nio.charset.Charset
 
 object RetrofitClient {
     private const val BASE_URL = "https://618d3aa7fe09aa001744060a.mockapi.io/api/"
