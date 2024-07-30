@@ -1,9 +1,11 @@
 package com.example.sportseventsapp
 
 import android.app.Application
-import dagger.hilt.android.HiltAndroidApp
+import com.example.sportseventsapp.data.SportsEventsDatabase
+import com.example.sportseventsapp.repository.SportsRepository
 
-@HiltAndroidApp
 class SportsEventsApp : Application() {
 
+    private val database by lazy { SportsEventsDatabase.getDatabase(this) }
+    val repository by lazy { SportsRepository( this, database) }
 }
