@@ -1,15 +1,17 @@
 package com.example.sportseventsapp
 
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.test.ext.junit.rules.ActivityScenarioRule
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.printToLog
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.sportseventsapp.model.FavoriteEvent
 import com.example.sportseventsapp.model.Sport
 import com.example.sportseventsapp.model.SportEvent
 import com.example.sportseventsapp.ui.CountdownTimer
-import com.example.sportseventsapp.ui.MainActivity
 import com.example.sportseventsapp.ui.SportsApp
 import com.example.sportseventsapp.viewmodel.SportsEventsViewModel
 import io.mockk.every
@@ -24,9 +26,6 @@ import org.junit.runner.RunWith
 class SportsAppTest {
     @get:Rule
     val composeTestRule = createComposeRule()
-
-    @get:Rule
-    val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
     private lateinit var viewModel: SportsEventsViewModel
 
@@ -81,28 +80,50 @@ class SportsAppTest {
 
     @Test
     fun sportsApp_FilterFavorites() {
+        // Define sports events and favorite events
         val sportsEvents = listOf(
             Sport(id = "1", name = "Football", sportEvents = listOf(
-                SportEvent(id = "1", name = "Football Match", startTime = 1655721600)
+                SportEvent(id = "1", name = "Football1 - Football1", startTime = 1655721600)
             )),
             Sport(id = "2", name = "Basketball", sportEvents = listOf(
-                SportEvent(id = "2", name = "Basketball Game", startTime = 1655721600)
+                SportEvent(id = "2", name = "Basketball1 - Basketball1", startTime = 1655721600)
             ))
         )
         val favoriteEvents = listOf(
-            FavoriteEvent(id = "1", name = "Sample Event", sportId = "1", startTime = 1630863600)
+            FavoriteEvent(id = "1", name = "Football1 - Football1", sportId = "1", startTime = 1630863600)
         )
+
+        // Mock view model
         every { viewModel.loading } returns MutableStateFlow(false)
         every { viewModel.sports } returns MutableStateFlow(sportsEvents)
         every { viewModel.favoriteEvents } returns MutableStateFlow(favoriteEvents)
 
+        // Set the Composable content
         composeTestRule.setContent {
             SportsApp(viewModel = viewModel)
         }
 
-        // Verify that the list items display only favorite events
-        composeTestRule.onNodeWithText("Football Match").assertExists()
-        composeTestRule.onNodeWithText("Basketball Game").assertDoesNotExist()
+        // Toggle the filter switch for "Football" sport to show only favorite events
+        composeTestRule.onNodeWithTag("SportItem_1").performClick()
+        // Toggle the filter switch for "Football" sport to show only favorite events
+        composeTestRule.onNodeWithTag("SportItem_2").performClick()
+
+        // Wait for UI to settle
+        composeTestRule.waitForIdle()
+
+        // Print the UI hierarchy to log
+        composeTestRule.onRoot().printToLog("TAG")
+
+        // Verify that the sport items are displayed
+        composeTestRule.onNodeWithText("Football1").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Basketball1").assertIsDisplayed()
+
+        // Toggle the filter switch for "Football" sport to show only favorite events
+        composeTestRule.onNodeWithTag("FavoriteSwitch_1").performClick()
+
+        // Verify that only the favorite event is displayed after toggling the switch
+        composeTestRule.onNodeWithText("Football1").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Basketball1").assertDoesNotExist()
     }
 
     @Test

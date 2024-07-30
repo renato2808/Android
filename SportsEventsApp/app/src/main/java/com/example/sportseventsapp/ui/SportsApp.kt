@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -53,7 +54,7 @@ fun SportsApp(viewModel: SportsEventsViewModel) {
         Box(modifier = Modifier.fillMaxSize()) {
             when {
                 isLoading -> {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center).testTag("ProgressIndicator"))
                 }
 
                 sports.isEmpty() -> {
@@ -138,6 +139,7 @@ fun SportItem(
                         checkedTrackColor = Color(0xFFFFD700).copy(alpha = 0.5f),
                         uncheckedTrackColor = Color.Black.copy(alpha = 0.5f)
                     ),
+                    modifier = Modifier.testTag("FavoriteSwitch_${sport.id}"),
                     thumbContent = {
                         Icon(
                             imageVector = Icons.Default.Star,
@@ -152,7 +154,7 @@ fun SportItem(
                 )
                 IconButton(
                     onClick = { isExpandedState.value = !isExpanded },
-                    modifier = Modifier.padding(start = 8.dp)
+                    modifier = Modifier.padding(start = 8.dp).testTag("SportItem_${sport.id}")
                 ) {
                     Icon(
                         imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
@@ -191,7 +193,7 @@ fun EventItem(sportEvent: SportEvent, isFavorite: Boolean, viewModel: SportsEven
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(8.dp).testTag(competitor1),
         color = MaterialTheme.colorScheme.surface,
         shape = MaterialTheme.shapes.medium,
         tonalElevation = 4.dp,
